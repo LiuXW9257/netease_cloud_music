@@ -1,4 +1,4 @@
-## 网易云音乐
+## 网易云音乐笔记
 
 ### 0. 技术栈
 
@@ -243,3 +243,90 @@ module.exports = {
 
 ![image-20230507153841142](assets/image-20230507153841142.png)
 
+4. index.tsx中引入
+
+```tsx
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from '@/App'
+import 'normalize.css'
+import './assets/css/index.less'
+
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+)
+```
+
+### 5. 路由配置
+
+1. 安装 react-router
+
+```bash
+npm i react-router-dom
+```
+
+2. 创建路由文件`router/index.tsx`
+
+```tsx
+import React from 'react'
+import { RouteObject } from 'react-router-dom'
+import Home from '@/views/home'
+
+const routes: RouteObject[] = [
+  {
+    path: '/',
+    element: <Home />
+  },
+]
+
+export default routes
+```
+
+> - tsx文件 因为需要识别组件，所以也需要导入react
+> - routes数组需要类型，这样也能有属性名提示
+
+3. 使用路由表
+
+`App.tsx`
+
+```tsx
+import React from 'react'
+import { useRoutes } from 'react-router-dom'
+import routes from './router'
+
+function App() {
+  const outlet = useRoutes(routes)
+
+  return <div>{outlet}</div>
+}
+
+export default App
+
+```
+
+4. 选择路由模式
+
+`index.tsx`
+
+```tsx
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { HashRouter } from 'react-router-dom'
+import App from '@/App'
+import 'normalize.css'
+import './assets/css/index.less'
+
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+root.render(
+  <React.StrictMode>
+    <HashRouter>
+      <App />
+    </HashRouter>
+  </React.StrictMode>
+)
+```
+
+> 使用路由表`useRoutes`，需要将整个项目包裹在`<Router>`中，所以，我们需要使用`<HashRouter>/<BrowserRouter>`
