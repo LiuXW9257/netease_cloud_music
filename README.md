@@ -64,7 +64,7 @@ create-react-app netease_cloud_music --template typescript
 
    ![image-20230506172528500](assets/image-20230506172528500.png)
 
-4. 项目集成`prettier+eslint`
+4. 项目集成`prettier + eslint`
 
    1. 创建`.editorconfig`
 
@@ -135,4 +135,77 @@ create-react-app netease_cloud_music --template typescript
       npm run prettier
       ```
       
+   
+   3. 集成`eslint`
+   
+      1. 安装
+   
+      ```bash
+      npx eslint --init
+      ```
+   
+      ![image-20230507144052453](assets/image-20230507144052453.png)
+   
+      ![image-20230507144058148](assets/image-20230507144058148.png)
+   
+      会自动生成`.eslintrc.js`
+   
+      ```js
+      module.exports = {
+        env: {
+          browser: true,
+          es2021: true,
+          node: true
+        },
+        extends: [
+          'eslint:recommended',
+          'plugin:react/recommended',
+          'plugin:@typescript-eslint/recommended',
+          'plugin:prettier/recommended'
+        ],
+        overrides: [],
+        parser: '@typescript-eslint/parser',
+        parserOptions: {
+          ecmaVersion: 'latest',
+          sourceType: 'module'
+        },
+        plugins: ['react', '@typescript-eslint'],
+        rules: {
+          '@typescript-eslint/no-var-requires': 'off'
+        }
+      }
       
+      ```
+   
+      ```
+      // commonjs规范
+      // 避免 module.exports报错
+      env: {
+        node: true
+      },
+      
+      
+      // 避免 requires 报错
+      rules: {
+      	'@typescript-eslint/no-var-requires': 'off'
+      }
+      ```
+   
+      2. `eslint` 结合 `prettier`
+   
+      > 是`eslint`检查时 按照`prettier`规范
+   
+      ```
+      npm i eslint-plugin-prettier eslint-config-prettier -D
+      ```
+   
+      ```js
+      // eslint 结合 prettier
+      extends: [
+        'plugin:prettier/recommended'
+      ],
+      ```
+   
+      > prittier**书写**代码时检查规范
+      >
+      > eslint **编译**代码时检查规范
