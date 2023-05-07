@@ -213,3 +213,33 @@ create-react-app netease_cloud_music --template typescript
 ### 3. 项目结构搭建
 
 ![image-20230507150630107](assets/image-20230507150630107.png)
+
+### 4. css样式重置
+
+1. 安装
+
+```bash
+npm i normalize.css
+```
+
+2. 通过`craco`配置`less`
+
+```bash
+npm i craco-less@2.1.0-alpha.0
+```
+
+`craco.config.js`添加配置
+
+```js
+const CracoLessPlugin = require('craco-less')
+module.exports = {
+  plugins: [{ plugin: CracoLessPlugin }]
+}
+```
+
+> 只有配置了`less` `react`项目才能识别`.less`文件
+
+3. 创建**重置**、**初始化**css样式、**样式导出**文件
+
+![image-20230507153841142](assets/image-20230507153841142.png)
+
