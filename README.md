@@ -209,3 +209,7 @@ create-react-app netease_cloud_music --template typescript
       > prittier**书写**代码时检查规范
       >
       > eslint **编译**代码时检查规范
+
+### 3. 项目结构搭建
+
+![image-20230507150630107](assets/image-20230507150630107.png)
