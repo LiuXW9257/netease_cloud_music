@@ -189,22 +189,22 @@ create-react-app netease_cloud_music --template typescript
       	'@typescript-eslint/no-var-requires': 'off'
       }
       ```
-    
+
       2. `eslint` 结合 `prettier`
-    
+
       > 是`eslint`检查时 按照`prettier`规范
-    
+
       ```
       npm i eslint-plugin-prettier eslint-config-prettier -D
       ```
-    
+
       ```js
       // eslint 结合 prettier
       extends: [
         'plugin:prettier/recommended'
       ],
       ```
-    
+
       > prittier**书写**代码时检查规范
       >
       > eslint **编译**代码时检查规范
@@ -346,14 +346,13 @@ const Template: React.FC<IProps> = () => {
 }
 
 export default memo(Template)
-
 ```
 
 > https://snippet-generator.app/
 >
 > - `React.FC`：React 函数式组件类型
 > - 通过传入类型的形式，确定参数类型`IProps`
-> - React 更新后，需要自己添加传入的可选属性：`children`，老版本自动添加为可选，*通过交叉类型实现*
+> - React 更新后，需要自己添加传入的可选属性：`children`，老版本自动添加为可选，_通过交叉类型实现_
 > - 最后通过`memo` `HOC`导出
 
 2. 路由重定向
@@ -371,7 +370,7 @@ export default memo(Template)
 
 > 路由组件分包处理（`import()`）
 >
-> - 因为`webpack`默认会将它所有直接`import`导入的组件打包到一个文件中，如果使用`import()`函数，则会进行分包处理（*模块化*）
+> - 因为`webpack`默认会将它所有直接`import`导入的组件打包到一个文件中，如果使用`import()`函数，则会进行分包处理（_模块化_）
 > - 这种操作在`vue/react`路由组件中成为**懒加载**
 
 ```tsx
@@ -392,7 +391,7 @@ const routes: RouteObject[] = [
   {
     path: '/discover',
     element: lazyLoad(Discover)
-  },
+  }
 ]
 ```
 
@@ -419,13 +418,13 @@ const routes: RouteObject[] = [
          {
            path: '/discover/recommend',
            element: lazyLoad(Recommend)
-         },
+         }
        ]
      },
      {
        path: '/mine',
        element: lazyLoad(Mine)
-     },
+     }
    ]
    ```
 
@@ -443,8 +442,6 @@ const routes: RouteObject[] = [
    >
    > - 和我们的方法一样，定义`lazyLoad()`方法，给每个懒加载组件包裹`<Suspense>`
    > - 二级路由不使用懒加载的形式（`可行性不大`）
-
-
 
 ### 6. Redux 配置
 
@@ -464,7 +461,6 @@ const store = configureStore({
 })
 
 export default store
-
 ```
 
 > `configureStore`
@@ -484,25 +480,22 @@ const counterSlice = createSlice({
 })
 
 export default counterSlice.reducer
-
 ```
 
 > `createSlice`
 >
-> - ts中`createSlice`的配置对象型参数中`name`、`inittialState`、`reducers`三个属性为必须属性`extraReducers`为可选属性
+> - ts 中`createSlice`的配置对象型参数中`name`、`inittialState`、`reducers`三个属性为必须属性`extraReducers`为可选属性
 
-#### TS中的类型推导
+#### TS 中的类型推导
 
-**思路**： 
+**思路**：
 
 1. 根据`store.getState()`方法的返回值可以得到需要使用的`state`的类型
 2. `TS`中通过`ReturnType<typeof fn>`可以获得一个函数的返回值类型
 
 ```ts
-const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
+const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector
 ```
-
-
 
 3. 重写`useSelector` `hooks`，将返回值类型通过构造签名的形式传递给`useAppSelector`
 
@@ -510,7 +503,10 @@ const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 ```ts
 export interface TypedUseSelectorHook<TState> {
-    <TSelected>(selector: (state: TState) => TSelected, equalityFn?: EqualityFn<NoInfer<TSelected>>): TSelected;
+  <TSelected>(
+    selector: (state: TState) => TSelected,
+    equalityFn?: EqualityFn<NoInfer<TSelected>>
+  ): TSelected
 }
 ```
 
@@ -518,7 +514,7 @@ export interface TypedUseSelectorHook<TState> {
 
 2. 通过该函数签名可以自定义和`useSelector`参数和返回值类型相同的函数，并且改函数签名接受一个**泛型**，用于给`state`指定类型
 
-3. 直接将`useSelector`赋值给自定义的函数（因为两个满足相同的函数签名，所以TS不会报错），使得自定义函数拥有`useSelector`的特性
+3. 直接将`useSelector`赋值给自定义的函数（因为两个满足相同的函数签名，所以 TS 不会报错），使得自定义函数拥有`useSelector`的特性
 
 4. 将通过`store.getState`获得的类型作为函数签名接受的**泛型**，用于执行`state`类型
 
@@ -530,8 +526,6 @@ export interface TypedUseSelectorHook<TState> {
 
    ![image-20230508143041737](assets/image-20230508143041737.png)
 
-   
-
 `useDispatch`本可以不修改，为了方便管理，我们也进行了重写
 
 1. 获取`useDispatch`函数返回值类型
@@ -539,8 +533,6 @@ export interface TypedUseSelectorHook<TState> {
 ```ts
 export type DispatchType = typeof store.dispatch
 ```
-
-
 
 2. 重写函数
 
@@ -582,7 +574,7 @@ class Request {
   constructor(config) {
     this.instance = axios.create(config)
 
-   
+
   // 封装网络请求的方法
   request(config) {
     return this.instance.request(config)
@@ -592,8 +584,6 @@ class Request {
 export default Request
 
 ```
-
-
 
 ##### 2. 全局拦截器
 
@@ -639,7 +629,6 @@ class Request {
 }
 
 export default Request
-
 ```
 
 ##### 3. 定义类型
@@ -659,8 +648,6 @@ export interface RequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
   interceptors?: Interceptors<T>
 }
 ```
-
-
 
 ##### 4. 实例拦截器
 
@@ -696,13 +683,10 @@ class Request {
 }
 
 export default Request
-
 ```
 
 - 实例化`Request`对象时，`config`配置项参数类型应该是我们新建的`RequestConfig`类型，而不是`AxiosRequestConfig`因为该类型没有`interceptors`属性
 - `request()`请求方法的`config`类型，仍然可以是`AxiosRequestConfig`类型
-
-
 
 ##### 5. 单次请求拦截器
 
@@ -745,14 +729,13 @@ class Request {
 }
 
 export default Request
-
 ```
 
 - 因为涉及到某个请求，所以，这个请求可以从`config`中获取到**拦截器钩子函数**，所以，`request()`配置对象类型也应该是我们定义的`RequestConfig`类型
 - 我们只在单次请求中使用传入的拦截器，所以不能将拦截器挂载到`Request`实例对象身上，因为这样，会导致该实例的其他请求也会有该拦截器
 - 首先在执行`axios`自己的`request`之前我们判断是否存在但此请求拦截器如果存在，则先执行拦截器，在执行`axios`自己的`request`
 - `axios`自己的`request`返回的是一个`Promise`对象，为了获取执行单次响应拦截器，我们不能直接调用`axios`自己的`request`，并返回。所以，我们通过插入中间`Promise`的方式来获取`axios`自己的`request`的执行结果，并判断是否有需要执行的响应拦截器以后再`resolve()/reject()`结果
-- 在这里为了直接获取到服务器返回的数据，去除axios的额外封装数据，并能推断出数据类型，需要传递一个泛型给`Promise`
+- 在这里为了直接获取到服务器返回的数据，去除 axios 的额外封装数据，并能推断出数据类型，需要传递一个泛型给`Promise`
 
 > 传递过程如图所示
 
@@ -859,7 +842,6 @@ class Request {
 }
 
 export default Request
-
 ```
 
 `service/request/type`
@@ -878,5 +860,4 @@ export interface Interceptors<T> {
 export interface RequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
   interceptors?: Interceptors<T>
 }
-
 ```
