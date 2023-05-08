@@ -5,8 +5,8 @@ interface IProps {
   children?: ReactNode
 }
 
-const Discover: React.FC<IProps> = () => {
-  return <div>discover</div>
+const Template: React.FC<IProps> = () => {
+  return <div>Template</div>
 }
 
-export default memo(Discover)
+export default memo(Template)

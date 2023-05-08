@@ -114,10 +114,10 @@ create-react-app netease_cloud_music --template typescript
       .local
       .output.js
       /node_modules/**
-      
+
       **/*.svg
       **/*.sh
-      
+
       /public/*
       ```
 
@@ -128,28 +128,27 @@ create-react-app netease_cloud_music --template typescript
       ```
 
       ![image-20230507135432045](assets/image-20230507135432045.png)
-      
+
       > 用于整体格式化所有代码
-      
+
       ```bash
       npm run prettier
       ```
-      
-   
+
    3. 集成`eslint`
-   
+
       1. 安装
-   
+
       ```bash
       npx eslint --init
       ```
-   
+
       ![image-20230507144052453](assets/image-20230507144052453.png)
-   
+
       ![image-20230507144058148](assets/image-20230507144058148.png)
-   
+
       会自动生成`.eslintrc.js`
-   
+
       ```js
       module.exports = {
         env: {
@@ -174,38 +173,37 @@ create-react-app netease_cloud_music --template typescript
           '@typescript-eslint/no-var-requires': 'off'
         }
       }
-      
       ```
-   
+
       ```
       // commonjs规范
       // 避免 module.exports报错
       env: {
         node: true
       },
-      
-      
+
+
       // 避免 requires 报错
       rules: {
       	'@typescript-eslint/no-var-requires': 'off'
       }
       ```
-   
+    
       2. `eslint` 结合 `prettier`
-   
+    
       > 是`eslint`检查时 按照`prettier`规范
-   
+    
       ```
       npm i eslint-plugin-prettier eslint-config-prettier -D
       ```
-   
+    
       ```js
       // eslint 结合 prettier
       extends: [
         'plugin:prettier/recommended'
       ],
       ```
-   
+    
       > prittier**书写**代码时检查规范
       >
       > eslint **编译**代码时检查规范
@@ -214,7 +212,7 @@ create-react-app netease_cloud_music --template typescript
 
 ![image-20230507150630107](assets/image-20230507150630107.png)
 
-### 4. css样式重置
+### 4. css 样式重置
 
 1. 安装
 
@@ -239,11 +237,11 @@ module.exports = {
 
 > 只有配置了`less` `react`项目才能识别`.less`文件
 
-3. 创建**重置**、**初始化**css样式、**样式导出**文件
+3. 创建**重置**、**初始化**css 样式、**样式导出**文件
 
 ![image-20230507153841142](assets/image-20230507153841142.png)
 
-4. index.tsx中引入
+4. index.tsx 中引入
 
 ```tsx
 import React from 'react'
@@ -279,14 +277,14 @@ const routes: RouteObject[] = [
   {
     path: '/',
     element: <Home />
-  },
+  }
 ]
 
 export default routes
 ```
 
-> - tsx文件 因为需要识别组件，所以也需要导入react
-> - routes数组需要类型，这样也能有属性名提示
+> - tsx 文件 因为需要识别组件，所以也需要导入 react
+> - routes 数组需要类型，这样也能有属性名提示
 
 3. 使用路由表
 
@@ -304,7 +302,6 @@ function App() {
 }
 
 export default App
-
 ```
 
 4. 选择路由模式
@@ -330,3 +327,42 @@ root.render(
 ```
 
 > 使用路由表`useRoutes`，需要将整个项目包裹在`<Router>`中，所以，我们需要使用`<HashRouter>/<BrowserRouter>`
+
+#### 1. 一级路由配置
+
+1. 配置用户代码片段
+
+```tsx
+import React, { memo } from 'react'
+import type { ReactNode } from 'react'
+
+interface IProps {
+  children?: ReactNode
+}
+
+const Template: React.FC<IProps> = () => {
+  return <div>Template</div>
+}
+
+export default memo(Template)
+
+```
+
+> https://snippet-generator.app/
+>
+> - `React.FC`：React 函数式组件类型
+> - 通过传入类型的形式，确定参数类型`IProps`
+> - React 更新后，需要自己添加传入的可选属性：`children`，老版本自动添加为可选，*通过交叉类型实现*
+> - 最后通过`memo` `HOC`导出
+
+2. 路由重定向
+
+```tsx
+{
+  path: '/',
+  element: <Navigate to="/discover" />
+},
+```
+
+> `<Navigate />`
+
