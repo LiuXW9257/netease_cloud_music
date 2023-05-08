@@ -366,3 +366,33 @@ export default memo(Template)
 
 > `<Navigate />`
 
+#### 2. 路由懒加载
+
+> 路由组件分包处理（`import()`）
+>
+> - 因为`webpack`默认会将它所有直接`import`导入的组件打包到一个文件中，如果使用`import()`函数，则会进行分包处理（*模块化*）
+> - 这种操作在`vue/react`路由组件中成为**懒加载**
+
+```tsx
+import React, { Suspense, lazy } from 'react'
+
+const Discover = lazy(() => import('@/views/discover'))
+
+const lazyLoad = (RC: React.FC) => {
+  return (
+    <Suspense>
+      <RC />
+    </Suspense>
+  )
+}
+
+const routes: RouteObject[] = [
+  {
+    path: '/discover',
+    element: lazyLoad(Discover)
+  },
+]
+```
+
+
+
