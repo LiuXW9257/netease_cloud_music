@@ -5,6 +5,7 @@
 - React 18
 - TS
 - webpack
+- Redux RTK
 - antd
 
 ### 1. 创建项目
@@ -445,3 +446,79 @@ const routes: RouteObject[] = [
 
 
 
+### 6. Redux 配置
+
+1. 安装
+
+```bash
+npm i @reduxjs/toolkit react-redux
+```
+
+2. 创建`store`
+
+```ts
+import { configureStore } from '@reduxjs/toolkit'
+
+const store = configureStore({
+  reducer: {}
+})
+
+export default store
+
+```
+
+> `configureStore`
+
+3. 创建仓库片段
+
+```ts
+import { createSlice } from '@reduxjs/toolkit'
+
+const counterSlice = createSlice({
+  name: 'counter',
+  initialState: {
+    count: 99,
+    name: 'tom'
+  },
+  reducers: {}
+})
+
+export default counterSlice.reducer
+
+```
+
+> `createSlice`
+>
+> - ts中`createSlice`的配置对象型参数中`name`、`inittialState`、`reducers`三个属性为必须属性`extraReducers`为可选属性
+
+#### TS中的类型推导
+
+**思路**： 
+
+1. 根据`store.getState()`方法的返回值可以得到需要使用的`state`的类型
+2. `TS`中通过`ReturnType<typeof fn>`可以获得一个函数的返回值类型
+
+```ts
+const useTypedSelector: TypedUseSelectorHook<RootState> = useSelector;
+```
+
+
+
+3. 重写`useSelector` `hooks`，将返回值类型通过构造签名的形式传递给`useAppSelector`
+
+**解释**：
+
+```ts
+export interface TypedUseSelectorHook<TState> {
+    <TSelected>(selector: (state: TState) => TSelected, equalityFn?: EqualityFn<NoInfer<TSelected>>): TSelected;
+}
+```
+
+1. `react-redux`定义了一个函数签名`TypedUseSelectorHook`，该函数签名满足`useSelector`的函数形式
+2. 通过该函数签名可以自定义和`useSelector`参数和返回值类型相同的函数，并且改函数签名接受一个**泛型**，用于给`state`指定类型
+3. 直接将`useSelector`赋值给自定义的函数（因为两个满足相同的函数签名，所以TS不会报错），使得自定义函数拥有`useSelector`的特性
+4. 将通过`store.getState`获得的类型作为函数签名接受的**泛型**，用于执行`state`类型
+
+![image-20230508143121698](assets/image-20230508143121698.png)
+
+![image-20230508143041737](assets/image-20230508143041737.png)
