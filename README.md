@@ -375,12 +375,13 @@ export default memo(Template)
 
 ```tsx
 import React, { Suspense, lazy } from 'react'
+import Loading from '@/base-ui/loading'
 
 const Discover = lazy(() => import('@/views/discover'))
 
 const lazyLoad = (RC: React.FC) => {
   return (
-    <Suspense>
+    <Suspense fallback={<Loading />}>
       <RC />
     </Suspense>
   )
@@ -393,6 +394,54 @@ const routes: RouteObject[] = [
   },
 ]
 ```
+
+#### 3. discover 二级路由
+
+1. **路由表**配置中的问题
+
+   - 一级路由`discover`正常加载组件，而不是直接跳转，在其子路由中设置相同路由地址，该地址进行跳转，如下，这样才能正常展示一级路由的**导航栏**。
+
+   ```tsx
+   const routes: RouteObject[] = [
+     {
+       path: '/',
+       element: <Navigate to="/discover" />
+     },
+     {
+       path: '/discover',
+       element: lazyLoad(Discover),
+       children: [
+         {
+           path: '/discover',
+           element: <Navigate to="/discover/recommend" />
+         },
+         {
+           path: '/discover/recommend',
+           element: lazyLoad(Recommend)
+         },
+       ]
+     },
+     {
+       path: '/mine',
+       element: lazyLoad(Mine)
+     },
+   ]
+   ```
+
+2. 二级路由需要占位组件`<Outlet />`
+
+> - 相当于`vue`中的`router-view`
+>
+> - 用于控制二级路由加载的**内容显示**的**位置**
+
+3. 切换路由`discover`导航栏闪烁问题
+
+   直接使用`<Suspense>`包裹一级路由，并且二级路由使用懒加载的形式（但二级路由没有使用`<Suspense>`包裹）导致，因为这样会在二级路由没有加载出来时整个一级路由的内容也都没有返回值
+
+   > 解决办法：
+   >
+   > - 和我们的方法一样，定义`lazyLoad()`方法，给每个懒加载组件包裹`<Suspense>`
+   > - 二级路由不使用懒加载的形式（`可行性不大`）
 
 
 
