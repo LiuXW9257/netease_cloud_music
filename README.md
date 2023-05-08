@@ -515,15 +515,24 @@ export interface TypedUseSelectorHook<TState> {
 ```
 
 1. `react-redux`定义了一个函数签名`TypedUseSelectorHook`，该函数签名满足`useSelector`的函数形式
+
 2. 通过该函数签名可以自定义和`useSelector`参数和返回值类型相同的函数，并且改函数签名接受一个**泛型**，用于给`state`指定类型
+
 3. 直接将`useSelector`赋值给自定义的函数（因为两个满足相同的函数签名，所以TS不会报错），使得自定义函数拥有`useSelector`的特性
+
 4. 将通过`store.getState`获得的类型作为函数签名接受的**泛型**，用于执行`state`类型
 
-![image-20230508143121698](assets/image-20230508143121698.png)
+5. 通过类型推导（过程如图所示），整个最外层的函数的返回值才和内层函数的返回值类型保持一致的
 
-![image-20230508143041737](assets/image-20230508143041737.png)
+   ![image-20230508151503265](assets/image-20230508151503265.png)
 
-> useDispatch本可以不修改，为了方便管理，我们也进行了重写
+   ![image-20230508143121698](assets/image-20230508143121698.png)
+
+   ![image-20230508143041737](assets/image-20230508143041737.png)
+
+   
+
+`useDispatch`本可以不修改，为了方便管理，我们也进行了重写
 
 1. 获取`useDispatch`函数返回值类型
 
@@ -533,7 +542,7 @@ export type DispatchType = typeof store.dispatch
 
 
 
-1. 重写函数
+2. 重写函数
 
 ```ts
 export const useAppDispatch: () => DispatchType = useDispatch
