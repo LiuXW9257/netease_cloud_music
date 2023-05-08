@@ -548,3 +548,335 @@ export type DispatchType = typeof store.dispatch
 export const useAppDispatch: () => DispatchType = useDispatch
 ```
 
+### 7. 集成 axios
+
+1. 安装
+
+```bash
+npm i axios
+```
+
+#### 1. axios 封装
+
+**两个难点**:
+
+1. 拦截器进行精细控制
+
+- 全局拦截器
+
+- 实例拦截器
+
+- 单次请求拦截器
+
+2. 响应结果的类型处理(泛型)
+
+##### 1. 简单封装
+
+> 无类型判断
+
+```ts
+import axios from 'axios'
+
+class Request {
+  // request实例 => axios的实例
+  constructor(config) {
+    this.instance = axios.create(config)
+
+   
+  // 封装网络请求的方法
+  request(config) {
+    return this.instance.request(config)
+  }
+}
+
+export default Request
+
+```
+
+
+
+##### 2. 全局拦截器
+
+```ts
+import axios from 'axios'
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
+
+class Request {
+  instance: AxiosInstance
+
+  // request实例 => axios的实例
+  constructor(config: AxiosRequestConfig) {
+    this.instance = axios.create(config)
+
+    // 每个instance实例都添加拦截器
+    this.instance.interceptors.request.use(
+      (config) => {
+        // loading/token
+        console.log('全局请求成功的拦截')
+        return config
+      },
+      (err) => {
+        console.log('全局请求失败的拦截')
+        return err
+      }
+    )
+    this.instance.interceptors.response.use(
+      (res) => {
+        console.log('全局响应成功的拦截')
+        return res.data
+      },
+      (err) => {
+        console.log('全局响应失败的拦截')
+        return err
+      }
+    )
+  }
+
+  // 封装网络请求的方法
+  request(config: AxiosRequestConfig) {
+    return this.instance.request(config)
+  }
+}
+
+export default Request
+
+```
+
+##### 3. 定义类型
+
+```ts
+import type { AxiosRequestConfig, AxiosResponse } from 'axios'
+
+// 针对AxiosRequestConfig配置进行扩展
+export interface Interceptors<T> {
+  reqSuccessFn?: (config: AxiosRequestConfig) => AxiosRequestConfig
+  reqFailureFn?: (err: any) => any
+  resSuccessFn?: (res: T) => T
+  resFailureFn?: (err: any) => any
+}
+
+export interface RequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
+  interceptors?: Interceptors<T>
+}
+```
+
+
+
+##### 4. 实例拦截器
+
+> 在创建实例时，将拦截器作为参数传入实例，所以，创建实例时的配置类参数，应该额外包含`interceptors`可选属性，所以创建上面定义的接口
+
+```ts
+import axios from 'axios'
+import type { AxiosInstance, AxiosRequestConfig } from 'axios'
+import type { RequestConfig } from './type'
+
+class Request {
+  instance: AxiosInstance
+
+  // request实例 => axios的实例
+  constructor(config: RequestConfig) {
+    this.instance = axios.create(config)
+
+    // 针对特定的Request请求实例添加拦截器
+    this.instance.interceptors.request.use(
+      config.interceptors?.reqSuccessFn,
+      config.interceptors?.reqFailureFn
+    )
+    this.instance.interceptors.response.use(
+      config.interceptors?.resSuccessFn,
+      config.interceptors?.resFailureFn
+    )
+  }
+
+  // 封装网络请求的方法
+  request(config: AxiosRequestConfig) {
+    return this.instance.request(config)
+  }
+}
+
+export default Request
+
+```
+
+- 实例化`Request`对象时，`config`配置项参数类型应该是我们新建的`RequestConfig`类型，而不是`AxiosRequestConfig`因为该类型没有`interceptors`属性
+- `request()`请求方法的`config`类型，仍然可以是`AxiosRequestConfig`类型
+
+
+
+##### 5. 单次请求拦截器
+
+```ts
+import axios from 'axios'
+import type { AxiosInstance } from 'axios'
+import type { RequestConfig } from './type'
+
+class Request {
+  instance: AxiosInstance
+
+  // request实例 => axios的实例
+  constructor(config: RequestConfig) {
+    this.instance = axios.create(config)
+  }
+
+  // 封装网络请求的方法
+  // 某个请求中的拦截器不能添加到实例身上，如果加到实例身上，其他请求也会有这个拦截器
+  request<T = any>(config: RequestConfig<T>) {
+    // 判断后，自己执行请求拦截器
+    if (config.interceptors?.reqSuccessFn) {
+      config = config.interceptors.reqSuccessFn(config)
+    }
+    // 手动返回一个新的 Promise， 在Promise中判断并执行拦截器
+    return new Promise<T>((resolve, reject) => {
+      this.instance
+        .request<any, T>(config)
+        .then((res) => {
+          if (config.interceptors?.resSuccessFn) {
+            // 判断后，自己执行响应拦截器
+            res = config.interceptors.resSuccessFn(res)
+          }
+          resolve(res)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
+  }
+}
+
+export default Request
+
+```
+
+- 因为涉及到某个请求，所以，这个请求可以从`config`中获取到**拦截器钩子函数**，所以，`request()`配置对象类型也应该是我们定义的`RequestConfig`类型
+- 我们只在单次请求中使用传入的拦截器，所以不能将拦截器挂载到`Request`实例对象身上，因为这样，会导致该实例的其他请求也会有该拦截器
+- 首先在执行`axios`自己的`request`之前我们判断是否存在但此请求拦截器如果存在，则先执行拦截器，在执行`axios`自己的`request`
+- `axios`自己的`request`返回的是一个`Promise`对象，为了获取执行单次响应拦截器，我们不能直接调用`axios`自己的`request`，并返回。所以，我们通过插入中间`Promise`的方式来获取`axios`自己的`request`的执行结果，并判断是否有需要执行的响应拦截器以后再`resolve()/reject()`结果
+- 在这里为了直接获取到服务器返回的数据，去除axios的额外封装数据，并能推断出数据类型，需要传递一个泛型给`Promise`
+
+> 传递过程如图所示
+
+![image-20230508205846327](assets/image-20230508205846327.png)
+
+#### 6. axios 分装结果
+
+`service/request/index`
+
+```ts
+import axios from 'axios'
+import type { AxiosInstance } from 'axios'
+import type { RequestConfig } from './type'
+
+// 拦截器: 蒙版Loading/token/修改配置
+
+/**
+ * 两个难点:
+ *  1.拦截器进行精细控制
+ *    > 全局拦截器
+ *    > 实例拦截器
+ *    > 单次请求拦截器
+ *
+ *  2.响应结果的类型处理(泛型)
+ */
+
+class Request {
+  instance: AxiosInstance
+
+  // request实例 => axios的实例
+  constructor(config: RequestConfig) {
+    this.instance = axios.create(config)
+
+    // 每个instance实例都添加拦截器
+    this.instance.interceptors.request.use(
+      (config) => {
+        // loading/token
+        console.log('全局请求成功的拦截')
+        return config
+      },
+      (err) => {
+        console.log('全局请求失败的拦截')
+        return err
+      }
+    )
+    this.instance.interceptors.response.use(
+      (res) => {
+        console.log('全局响应成功的拦截')
+        return res.data
+      },
+      (err) => {
+        console.log('全局响应失败的拦截')
+        return err
+      }
+    )
+
+    // 针对特定的Request请求实例添加拦截器
+    this.instance.interceptors.request.use(
+      config.interceptors?.reqSuccessFn,
+      config.interceptors?.reqFailureFn
+    )
+    this.instance.interceptors.response.use(
+      config.interceptors?.resSuccessFn,
+      config.interceptors?.resFailureFn
+    )
+  }
+
+  // 封装网络请求的方法
+  // 某个请求中的拦截器不能添加到实例身上，如果加到实例身上，其他请求也会有这个拦截器
+  request<T = any>(config: RequestConfig<T>) {
+    // 判断后，自己执行请求拦截器
+    if (config.interceptors?.reqSuccessFn) {
+      config = config.interceptors.reqSuccessFn(config)
+    }
+    // 手动返回一个新的 Promise， 在Promise中判断并执行拦截器
+    return new Promise<T>((resolve, reject) => {
+      this.instance
+        .request<any, T>(config)
+        .then((res) => {
+          if (config.interceptors?.resSuccessFn) {
+            // 判断后，自己执行响应拦截器
+            res = config.interceptors.resSuccessFn(res)
+          }
+          resolve(res)
+        })
+        .catch((err) => {
+          reject(err)
+        })
+    })
+  }
+
+  get<T = any>(config: RequestConfig<T>) {
+    return this.request({ ...config, method: 'GET' })
+  }
+  post<T = any>(config: RequestConfig<T>) {
+    return this.request({ ...config, method: 'POST' })
+  }
+  delete<T = any>(config: RequestConfig<T>) {
+    return this.request({ ...config, method: 'DELETE' })
+  }
+  patch<T = any>(config: RequestConfig<T>) {
+    return this.request({ ...config, method: 'PATCH' })
+  }
+}
+
+export default Request
+
+```
+
+`service/request/type`
+
+```ts
+import type { AxiosRequestConfig, AxiosResponse } from 'axios'
+
+// 针对AxiosRequestConfig配置进行扩展
+export interface Interceptors<T> {
+  reqSuccessFn?: (config: AxiosRequestConfig) => AxiosRequestConfig
+  reqFailureFn?: (err: any) => any
+  resSuccessFn?: (res: T) => T
+  resFailureFn?: (err: any) => any
+}
+
+export interface RequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
+  interceptors?: Interceptors<T>
+}
+
+```

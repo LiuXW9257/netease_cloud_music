@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useRoutes } from 'react-router-dom'
 import routes from './router'
 import { useAppDispatch, useAppSelector } from './store/hooks'
 import { updateName } from './store/modules/counter'
+import { testFetch, testFetch2, testFetch3 } from './service/modules/home'
 
 function App() {
   const outlet = useRoutes(routes)
   const { count, name } = useAppSelector((state) => state.counter)
   const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    // testFetch()
+    // testFetch2()
+    testFetch3()
+  }, [])
 
   const handleUpdateName = () => {
     dispatch(updateName('呵呵呵'))
