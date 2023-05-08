@@ -522,3 +522,20 @@ export interface TypedUseSelectorHook<TState> {
 ![image-20230508143121698](assets/image-20230508143121698.png)
 
 ![image-20230508143041737](assets/image-20230508143041737.png)
+
+> useDispatch本可以不修改，为了方便管理，我们也进行了重写
+
+1. 获取`useDispatch`函数返回值类型
+
+```ts
+export type DispatchType = typeof store.dispatch
+```
+
+
+
+1. 重写函数
+
+```ts
+export const useAppDispatch: () => DispatchType = useDispatch
+```
+

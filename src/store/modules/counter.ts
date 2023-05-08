@@ -6,7 +6,13 @@ const counterSlice = createSlice({
     count: 99,
     name: 'tom'
   },
-  reducers: {}
+  reducers: {
+    updateName(state, { payload }) {
+      state.name = payload
+    }
+  }
 })
+
+export const { updateName } = counterSlice.actions
 
 export default counterSlice.reducer
