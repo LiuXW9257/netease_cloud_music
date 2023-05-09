@@ -898,3 +898,36 @@ REACT_APP_BASE_URL=http://codercba.com:9002
 
 
 ![image-20230509093517469](assets/image-20230509093517469.png)
+
+### 9. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+### 99. 小结
+
+1. `redux`中使用`PayloadAction`指定`payload`类型
+
+```ts
+import { PayloadAction } from '@reduxjs/toolkit'
+
+reducers: {
+  updateName(state, { payload }: PayloadAction<string>) {
+    state.name = payload
+  }
+}
+```
+

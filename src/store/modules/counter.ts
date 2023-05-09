@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const counterSlice = createSlice({
   name: 'counter',
@@ -7,7 +7,7 @@ const counterSlice = createSlice({
     name: 'tom'
   },
   reducers: {
-    updateName(state, { payload }) {
+    updateName(state, { payload }: PayloadAction<string>) {
       state.name = payload
     }
   }
