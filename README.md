@@ -954,6 +954,74 @@ export default memo(AppFooter)
 
 
 
+### 10. 主题的定义与使用
+
+1. 创建`theme.ts`
+
+```ts
+const theme = {
+  color: {
+    primary: '#C20C0C',
+    secondary: ''
+  },
+  size: {},
+  mixin: {}
+}
+export default theme
+
+```
+
+导出是一个对象，在每个组件中通过`js`**表达式**获取对象的值
+
+2. 在`react`入口文件，将主题提供给整个`app`
+
+> 通过`ThemeProvider`
+>
+> `<ThemeProvider theme={theme}>`
+
+```tsx
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import { HashRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import App from '@/App'
+import 'normalize.css'
+import './assets/css/index.less'
+import store from './store'
+import { ThemeProvider } from 'styled-components'
+import theme from './assets/theme'
+
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
+root.render(
+  // <React.StrictMode>
+  <HashRouter>
+    <Provider store={store}>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </Provider>
+  </HashRouter>
+  // </React.StrictMode>
+)
+
+```
+
+3. 使用
+
+```stylus
+import styled from 'styled-components'
+
+export const HeaderWrapper = styled.div`
+  .content {
+    color: ${(props) => props.theme.color.primary};
+  }
+`
+```
+
+> `styled-components`中`${}`表示里面写的是`js`表达式
+
+
+
 
 
 
