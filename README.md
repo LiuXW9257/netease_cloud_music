@@ -899,9 +899,58 @@ REACT_APP_BASE_URL=http://codercba.com:9002
 
 ![image-20230509093517469](assets/image-20230509093517469.png)
 
-### 9. 
+### 9. styled-components
+
+```bash
+npm install styled-components@5.3.9 -D
+```
+
+![image-20230509105941756](assets/image-20230509105941756.png)
+
+**类型检测** 安装`@types`
+
+```bash
+npm i --save-dev @types/styled-components
+```
+
+使用：
+
+1. `style.ts` => `Wrapper`
+
+```ts
+import styled from 'styled-components'
+
+export const FooterWrapper = styled.div`
+  border-top: 1px solid #979a95;
+  margin-top: 25px;
+  display: flex;
+  height: 60px;
+  justify-content: center;
+  align-items: center;
+`
+
+```
 
 
+
+2. `tsx`组件中使用
+
+```tsx
+import React, { memo } from 'react'
+import type { ReactNode } from 'react'
+import { FooterWrapper } from './style'
+
+interface IProps {
+  children?: ReactNode
+}
+
+const AppFooter: React.FC<IProps> = () => {
+  return <FooterWrapper>AppFooter</FooterWrapper>
+}
+
+export default memo(AppFooter)
+
+```
 
 
 
