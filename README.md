@@ -189,22 +189,22 @@ create-react-app netease_cloud_music --template typescript
       	'@typescript-eslint/no-var-requires': 'off'
       }
       ```
-
+    
       2. `eslint` 结合 `prettier`
-
+    
       > 是`eslint`检查时 按照`prettier`规范
-
+    
       ```
       npm i eslint-plugin-prettier eslint-config-prettier -D
       ```
-
+    
       ```js
       // eslint 结合 prettier
       extends: [
         'plugin:prettier/recommended'
       ],
       ```
-
+    
       > prittier**书写**代码时检查规范
       >
       > eslint **编译**代码时检查规范
@@ -741,7 +741,7 @@ export default Request
 
 ![image-20230508205846327](assets/image-20230508205846327.png)
 
-#### 6. axios 分装结果
+#### 2. axios 分装结果
 
 `service/request/index`
 
@@ -861,3 +861,40 @@ export interface RequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
   interceptors?: Interceptors<T>
 }
 ```
+
+### 8. 环境区分
+
+> 开发环境、生产环境
+
+1. coder 手动切换
+2. 利用`webpack`根据当前依赖环境进行判断
+
+```ts
+// 1. 手动切换
+// export const BASE_URL = 'http://codercba.com:9002'
+export const TIME_OUT = 10000
+
+// 2. 利用webpack根据当前依赖环境进行判断
+let BASE_URL = ''
+if (process.env.NODE_ENV === 'development') {
+  BASE_URL = 'http://codercba.com:9002'
+} else {
+  BASE_URL = 'http://codercba.com:9001'
+}
+export { BASE_URL }
+
+```
+
+3. 配置文件形式
+
+`.env.production` `.envdevelopment`
+
+> 在`webpack`中需要这两个配置文件需要以`REACT_APP`开头才能被识别
+
+```bash
+REACT_APP_BASE_URL=http://codercba.com:9002
+```
+
+
+
+![image-20230509093517469](assets/image-20230509093517469.png)
