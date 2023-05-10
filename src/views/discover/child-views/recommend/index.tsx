@@ -1,19 +1,25 @@
-// import req from '@/service'
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 import type { ReactNode } from 'react'
+import { fetchRecommendData } from '@/store/modules/recommend'
+import { useAppDispatch } from '@/store/hooks'
+import TopBanner from './child-cpns/top-banner'
 
 interface IProps {
   children?: ReactNode
 }
 
-// interface IBanner {
-//   imageUrl: string
-// }
-
 const Recommend: React.FC<IProps> = () => {
-  // const [banners, setBanners] = useState<IBanner[]>([])
+  const dispatch = useAppDispatch()
 
-  return <div>Recommend</div>
+  useEffect(() => {
+    dispatch(fetchRecommendData())
+  }, [])
+
+  return (
+    <div>
+      <TopBanner />
+    </div>
+  )
 }
 
 export default memo(Recommend)

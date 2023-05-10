@@ -1144,6 +1144,75 @@ module.exports = {
 
 
 
+### 13. Recommend Banner（轮播图）
+
+![image-20230510162930952](assets/image-20230510162930952.png)
+
+#### 1. 控制切换
+
+>  需要获取到 `antd` `Carousel`组件，并调用他的切换方法`prev()` `next()`
+
+1. 使用`useRef`
+2. 在`TS`中需要确定获取组件的类型
+   - 使用`ElementRef` 和 `typeof Carousel` 确定一个第三方组件的类型
+   - 也有一些内置类型
+
+```tsx
+const bannersRef = useRef<ElementRef<typeof Carousel>>(null)
+                                     
+<Carousel ref={bannersRef}></Carousel>
+```
+
+```tsx
+const divRef = useRef<HTMLDivElement>(null)
+
+<div ref={divRef}></div>
+```
+
+#### 2. 切换淡入
+
+1. `antd` `Carousel`组件 使用属性`effect="fade"` 默认值为`scrollx`
+
+2. 背景淡入
+
+   - 根据切换的图片获取对应背景（`index`）
+   - 给背景所在的`div`添加过渡效果
+
+   ```css
+   /* 实现背景切换淡入淡出 */
+   transition: all 0.5s ease-in-out
+   ```
+
+#### 3. 重写轮播图下方的 `indicator`
+
+1. 关闭antd组件自带的样式
+2. 重写样式，定位到下方居中
+3. 根据当前`banner` `index`动态添加`active`属性，利用`classNames`插件
+
+```bash
+npm i classnames
+```
+
+```tsx
+<ul className="dots">
+  {banners.map((item, index) => {
+    return (
+      <li key={item.imageUrl}>
+        <span
+          className={classNames('item', {
+            active: currntBannerIndex === index
+          })}
+          ></span>
+      </li>
+    )
+  })}
+</ul>
+```
+
+> `classNames`：根据条件添加多个`class`
+
+
+
 ### 99. 小结
 
 1. `redux`中使用`PayloadAction`指定`payload`类型

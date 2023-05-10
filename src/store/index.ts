@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from './modules/counter'
+import recommendReducer from './modules/recommend'
 
 const store = configureStore({
   reducer: {
-    counter: counterReducer
+    recommend: recommendReducer
   }
 })
 type GetStateFnType = typeof store.getState
