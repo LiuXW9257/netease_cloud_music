@@ -16,6 +16,7 @@ interface TitleType {
 }
 
 const AppHeader: React.FC<IProps> = () => {
+  // 定义根据不同情况返回 link 或则路由的 menuItem的方法
   const showItem = (item: TitleType) => {
     if (item.type === 'path') {
       return (
