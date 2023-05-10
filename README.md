@@ -1020,9 +1020,51 @@ export const HeaderWrapper = styled.div`
 
 > `styled-components`中`${}`表示里面写的是`js`表达式
 
+### 11. 集成 antd
 
+1. 安装
 
-### 11. appHeader
+```bash
+npm i antd@4.7.0
+```
+
+2. 引入样式
+
+![image-20230510102715987](assets/image-20230510102715987.png)
+
+3. 配置
+
+```js
+const path = require('path')
+const CracoLessPlugin = require('craco-less')
+
+const resolve = (dir) => path.resolve(__dirname, dir)
+
+module.exports = {
+  plugins: [
+    {
+      plugin: CracoLessPlugin,
+      options: {
+        lessLoaderOptions: {
+          lessOptions: {
+            javascriptEnabled: true
+          }
+        }
+      }
+    }
+  ],
+  webpack: {
+    alias: {
+      '@': resolve('src')
+    }
+  }
+}
+
+```
+
+> `craco.fonfig.js`中为`CracoLessPlugin`添加 options 选项
+
+### 12. AppHeader
 
 ![image-20230510094512217](assets/image-20230510094512217.png)
 
@@ -1097,6 +1139,10 @@ export const HeaderWrapper = styled.div`
 #### 2. headerRight
 
 ![image-20230510094620756](assets/image-20230510094620756.png)
+
+> 使用`antd`
+
+
 
 ### 99. 小结
 

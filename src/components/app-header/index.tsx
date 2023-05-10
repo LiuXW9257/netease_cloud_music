@@ -1,7 +1,9 @@
 import React, { memo } from 'react'
 import { NavLink } from 'react-router-dom'
 import type { ReactNode } from 'react'
-import { HeaderLeft, HeaderWrapper } from './style'
+import { Input } from 'antd'
+import { SearchOutlined } from '@ant-design/icons'
+import { HeaderLeft, HeaderRight, HeaderWrapper } from './style'
 import menuList from '@/assets/data/header_titles.json'
 
 interface IProps {
@@ -51,6 +53,15 @@ const AppHeader: React.FC<IProps> = () => {
             })}
           </div>
         </HeaderLeft>
+        <HeaderRight>
+          <Input
+            className="search"
+            placeholder="音乐/视频/电台/用户"
+            prefix={<SearchOutlined />}
+          />
+          <div className="center">创作者中心</div>
+          <div className="login">登录</div>
+        </HeaderRight>
       </div>
       <div className="divider"></div>
     </HeaderWrapper>
