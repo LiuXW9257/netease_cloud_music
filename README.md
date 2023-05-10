@@ -1022,17 +1022,81 @@ export const HeaderWrapper = styled.div`
 
 
 
+### 11. appHeader
+
+![image-20230510094512217](assets/image-20230510094512217.png)
+
+#### 1. headerLeft
+
+![image-20230510094548657](assets/image-20230510094548657.png)
+
+1. `logo`：使用`a`标签包裹，并且内容为网易云音乐 优化`seo`搜索，在设置样式时添加`text-indent：-9999px`（字体缩进）隐藏字体
+2. 导航栏`menuList`是死数据，可在前端添加data文件夹，并使用`.json`文件记录其属性，`menuList.map()`
+
+```json
+[
+  {
+    "title": "发现音乐",
+    "type": "path",
+    "link": "/discover"
+  },
+  {
+    "title": "我的音乐",
+    "type": "path",
+    "link": "/mine"
+  },
+  {
+    "title": "关注",
+    "type": "path",
+    "link": "/focus"
+  },
+  {
+    "title": "商城",
+    "type": "link",
+    "link": "https://music.163.com/store/product"
+  },
+  {
+    "title": "音乐人",
+    "type": "link",
+    "link": "https://music.163.com/st/musician"
+  },
+  {
+    "title": "下载客户端",
+    "type": "path",
+    "link": "/download"
+  }
+]
+```
+
+3. `active`样式`=>`使用`NavLink`标签
+
+   - `NavLink`自定义激活样式：`className`属性可接受一个回调，回调函数中可以拿到当前激活状态，根据激活状态动态添加`css`激活样式
+
+   > 【官方解释】：
+   >
+   > The `className` prop works like a normal className, but you can also pass it a function to customize the classNames applied based on the active and pending state of the link.
+   >
+   > `className` 属性像普通的**类名**一样工作，但您也**可以向它传递一个函数**，以根据链接的活动和挂起状态**自定义应用的类名**。
+
+   ```tsx
+   <NavLink
+     to="/messages"
+     className={({ isActive, isPending }) =>
+       isPending ? "pending" : isActive ? "active" : ""
+     }
+   >
+     Messages
+   </NavLink>
+   ```
+
+   - 回调函数中结构出`isActive`、`isPending`
+   - `active`是我们自定义的`css`类样式
 
 
 
+#### 2. headerRight
 
-
-
-
-
-
-
-
+![image-20230510094620756](assets/image-20230510094620756.png)
 
 ### 99. 小结
 
