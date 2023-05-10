@@ -189,22 +189,22 @@ create-react-app netease_cloud_music --template typescript
       	'@typescript-eslint/no-var-requires': 'off'
       }
       ```
-    
+
       2. `eslint` 结合 `prettier`
-    
+
       > 是`eslint`检查时 按照`prettier`规范
-    
+
       ```
       npm i eslint-plugin-prettier eslint-config-prettier -D
       ```
-    
+
       ```js
       // eslint 结合 prettier
       extends: [
         'plugin:prettier/recommended'
       ],
       ```
-    
+
       > prittier**书写**代码时检查规范
       >
       > eslint **编译**代码时检查规范
@@ -882,7 +882,6 @@ if (process.env.NODE_ENV === 'development') {
   BASE_URL = 'http://codercba.com:9001'
 }
 export { BASE_URL }
-
 ```
 
 3. 配置文件形式
@@ -894,8 +893,6 @@ export { BASE_URL }
 ```bash
 REACT_APP_BASE_URL=http://codercba.com:9002
 ```
-
-
 
 ![image-20230509093517469](assets/image-20230509093517469.png)
 
@@ -928,10 +925,7 @@ export const FooterWrapper = styled.div`
   justify-content: center;
   align-items: center;
 `
-
 ```
-
-
 
 2. `tsx`组件中使用
 
@@ -949,10 +943,7 @@ const AppFooter: React.FC<IProps> = () => {
 }
 
 export default memo(AppFooter)
-
 ```
-
-
 
 ### 10. 主题的定义与使用
 
@@ -968,7 +959,6 @@ const theme = {
   mixin: {}
 }
 export default theme
-
 ```
 
 导出是一个对象，在每个组件中通过`js`**表达式**获取对象的值
@@ -1003,7 +993,6 @@ root.render(
   </HashRouter>
   // </React.StrictMode>
 )
-
 ```
 
 3. 使用
@@ -1059,7 +1048,6 @@ module.exports = {
     }
   }
 }
-
 ```
 
 > `craco.fonfig.js`中为`CracoLessPlugin`添加 options 选项
@@ -1073,7 +1061,7 @@ module.exports = {
 ![image-20230510094548657](assets/image-20230510094548657.png)
 
 1. `logo`：使用`a`标签包裹，并且内容为网易云音乐 优化`seo`搜索，在设置样式时添加`text-indent：-9999px`（字体缩进）隐藏字体
-2. 导航栏`menuList`是死数据，可在前端添加data文件夹，并使用`.json`文件记录其属性，`menuList.map()`
+2. 导航栏`menuList`是死数据，可在前端添加 data 文件夹，并使用`.json`文件记录其属性，`menuList.map()`
 
 ```json
 [
@@ -1124,7 +1112,7 @@ module.exports = {
    <NavLink
      to="/messages"
      className={({ isActive, isPending }) =>
-       isPending ? "pending" : isActive ? "active" : ""
+       isPending ? 'pending' : isActive ? 'active' : ''
      }
    >
      Messages
@@ -1134,15 +1122,11 @@ module.exports = {
    - 回调函数中结构出`isActive`、`isPending`
    - `active`是我们自定义的`css`类样式
 
-
-
 #### 2. headerRight
 
 ![image-20230510094620756](assets/image-20230510094620756.png)
 
 > 使用`antd`
-
-
 
 ### 13. Recommend Banner（轮播图）
 
@@ -1150,7 +1134,7 @@ module.exports = {
 
 #### 1. 控制切换
 
->  需要获取到 `antd` `Carousel`组件，并调用他的切换方法`prev()` `next()`
+> 需要获取到 `antd` `Carousel`组件，并调用他的切换方法`prev()` `next()`
 
 1. 使用`useRef`
 2. 在`TS`中需要确定获取组件的类型
@@ -1159,7 +1143,7 @@ module.exports = {
 
 ```tsx
 const bannersRef = useRef<ElementRef<typeof Carousel>>(null)
-                                     
+
 <Carousel ref={bannersRef}></Carousel>
 ```
 
@@ -1180,12 +1164,12 @@ const divRef = useRef<HTMLDivElement>(null)
 
    ```css
    /* 实现背景切换淡入淡出 */
-   transition: all 0.5s ease-in-out
+   transition: all 0.5s ease-in-out;
    ```
 
 #### 3. 重写轮播图下方的 `indicator`
 
-1. 关闭antd组件自带的样式
+1. 关闭 antd 组件自带的样式
 2. 重写样式，定位到下方居中
 3. 根据当前`banner` `index`动态添加`active`属性，利用`classNames`插件
 
@@ -1202,7 +1186,7 @@ npm i classnames
           className={classNames('item', {
             active: currntBannerIndex === index
           })}
-          ></span>
+        ></span>
       </li>
     )
   })}
@@ -1212,21 +1196,19 @@ npm i classnames
 > `classNames`：根据条件添加多个`class`
 
 ```ts
-classNames('foo', 'bar'); // => 'foo bar'
-classNames('foo', { bar: true }); // => 'foo bar'
-classNames({ 'foo-bar': true }); // => 'foo-bar'
-classNames({ 'foo-bar': false }); // => ''
-classNames({ foo: true }, { bar: true }); // => 'foo bar'
-classNames({ foo: true, bar: true }); // => 'foo bar'
+classNames('foo', 'bar') // => 'foo bar'
+classNames('foo', { bar: true }) // => 'foo bar'
+classNames({ 'foo-bar': true }) // => 'foo-bar'
+classNames({ 'foo-bar': false }) // => ''
+classNames({ foo: true }, { bar: true }) // => 'foo bar'
+classNames({ foo: true, bar: true }) // => 'foo bar'
 
 // lots of arguments of various types
-classNames('foo', { bar: true, duck: false }, 'baz', { quux: true }); // => 'foo bar baz quux'
+classNames('foo', { bar: true, duck: false }, 'baz', { quux: true }) // => 'foo bar baz quux'
 
 // other falsy values are just ignored
-classNames(null, false, 'bar', undefined, 0, 1, { baz: null }, ''); // => 'bar 1'
+classNames(null, false, 'bar', undefined, 0, 1, { baz: null }, '') // => 'bar 1'
 ```
-
-
 
 ### 99. 小结
 
@@ -1241,4 +1223,3 @@ reducers: {
   }
 }
 ```
-
