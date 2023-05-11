@@ -8,7 +8,7 @@ interface IProps {
   title?: string
   keywords?: any[]
   more?: string
-  morePath: string
+  morePath?: string
 }
 
 const TitleToolbar: React.FC<IProps> = (props: IProps) => {
@@ -27,10 +27,12 @@ const TitleToolbar: React.FC<IProps> = (props: IProps) => {
           })}
         </ul>
       </div>
-      <div className="right">
-        <Link to={props.morePath}>{props.more}</Link>
-        <i className="icon sprite_02"></i>
-      </div>
+      {props.morePath && (
+        <div className="right">
+          <Link to={props.morePath}>{props.more}</Link>
+          <i className="icon sprite_02"></i>
+        </div>
+      )}
     </TitleWrapper>
   )
 }

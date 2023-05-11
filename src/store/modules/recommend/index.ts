@@ -1,25 +1,29 @@
-import { getBanners } from '@/service/mosules/recommend'
+import { getBanners, getHotRecommend } from '@/service/mosules/recommend'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import type { IBanner } from './type'
 
 interface RecommendState {
   banners: IBanner[]
+  hotRecommends: any[]
 }
 
 // 初始化数据
 const initialState: RecommendState = {
-  banners: []
+  banners: [],
+  hotRecommends: []
 }
 
 export const fetchRecommendData = createAsyncThunk(
   'fetctdata',
   (condition, { dispatch }) => {
-    // 1. 获取顶部banners
+    // 1. 获取顶部轮播图 banners
     getBanners().then((res) => {
-      console.log('fetchRecommendData')
-      console.log(res)
-
       dispatch(updateBanners(res.banners))
+    })
+    // 2. 获取热门推荐
+    getHotRecommend(8).then((res) => {
+      console.log(res)
+      dispatch(updateHotRecommends(res.result))
     })
   }
 )
@@ -30,10 +34,13 @@ const recommendSlice = createSlice({
   reducers: {
     updateBanners(state, { payload }) {
       state.banners = payload
+    },
+    updateHotRecommends(state, { payload }) {
+      state.hotRecommends = payload
     }
   }
 })
 
-export const { updateBanners } = recommendSlice.actions
+export const { updateBanners, updateHotRecommends } = recommendSlice.actions
 
 export default recommendSlice.reducer

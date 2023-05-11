@@ -1261,6 +1261,26 @@ BUILD_PATH=netease_cloud_music
 
 
 
+### 16. item-v1
+
+![image-20230511231051266](assets/image-20230511231051266.png)
+
+- 网易云提供的图片获取方式可以添加参数，以便获取对应尺寸的图片，有利于页面加载`?param=140y140`
+- ts中默认参数值，即：参数可选（可以传）
+
+```ts
+// 优化图片获取路径
+export function formatGetImg(url: string, width: number, height = width) {
+  return url + `?param=${width}y${height}`
+}
+```
+
+- 提取公用方法
+
+
+
+
+
 
 
 ### 99. 小结
