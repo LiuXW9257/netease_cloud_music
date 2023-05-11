@@ -1249,6 +1249,20 @@ REACT_APP_BASE_URL=http://localhost:3000/prod
 BUILD_PATH=netease_cloud_music
 ```
 
+### 15. TitleToolbar
+
+![image-20230511222448726](assets/image-20230511222448726.png)
+
+> 很多地方用到，组件抽取，传值控制内容
+
+- 对于小标题`menu` 每个小标题后边有个`|`，最后一个隐藏
+  - css 伪类选择器`last-child`控制其隐藏
+  - 通过 js 判断`id`是不是最后一个，如果是，就不显示`|`所在的标签
+
+
+
+
+
 ### 99. 小结
 
 1. `redux`中使用`PayloadAction`指定`payload`类型
@@ -1264,13 +1278,13 @@ reducers: {
 ```
 
 2. nginx 部署导致的跨域：
-   
+
    > 使用 Nginx 部署项目时，可能会遇到跨域问题。这是因为默认情况下，Nginx 不允许跨域请求。
-   
+
    要解决这个问题，您可以使用以下方法：
-   
-   - 添加`add_header`指令到Nginx配置中
-   
+
+   - 添加`add_header`指令到 Nginx 配置中
+
    ```bash
    http {
        ...
@@ -1287,7 +1301,7 @@ reducers: {
        ...
    }
    ```
-   
-   > - 允许**所有域名**的请求访问您的Nginx服务器，可以将该指令添加到全局`http`块中。
+
+   > - 允许**所有域名**的请求访问您的 Nginx 服务器，可以将该指令添加到全局`http`块中。
    >
    > - 如果您只想**允许特定域名**的请求访问您的服务器，可以将该指令添加到您的`servers`块中，并将域名替换为您想要允许的域名。
