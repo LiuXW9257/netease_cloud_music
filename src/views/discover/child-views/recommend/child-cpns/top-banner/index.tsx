@@ -17,7 +17,7 @@ const TopBanner: React.FC<IProps> = () => {
     (state) => ({ banners: state.recommend.banners }),
     shallowEqual
   )
-  // 获取轮播图element，使用其prev next方法控制鲁珀图切换
+  // 获取轮播图element，使用其prev next方法控制轮播图切换
   const bannersRef = useRef<ElementRef<typeof Carousel>>(null)
   // 切换背景图片
   const [bgImg, setBgImg] = useState(bgImage)
