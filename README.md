@@ -189,22 +189,22 @@ create-react-app netease_cloud_music --template typescript
       	'@typescript-eslint/no-var-requires': 'off'
       }
       ```
-
+    
       2. `eslint` 结合 `prettier`
-
+    
       > 是`eslint`检查时 按照`prettier`规范
-
+    
       ```
       npm i eslint-plugin-prettier eslint-config-prettier -D
       ```
-
+    
       ```js
       // eslint 结合 prettier
       extends: [
         'plugin:prettier/recommended'
       ],
       ```
-
+    
       > prittier**书写**代码时检查规范
       >
       > eslint **编译**代码时检查规范
@@ -1210,6 +1210,45 @@ classNames('foo', { bar: true, duck: false }, 'baz', { quux: true }) // => 'foo 
 classNames(null, false, 'bar', undefined, 0, 1, { baz: null }, '') // => 'bar 1'
 ```
 
+### 14. craco 配置代理
+
+`craco.config.js`
+
+```js
+module.exports = {
+  devServer: {
+    proxy: {
+      '/dev': {
+        target: 'http://codercba.com:9002',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/dev': ''
+        }
+      },
+      '/prod': {
+        target: 'http://codercba.com:9002',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/prod': ''
+        }
+      }
+    }
+  }
+}
+```
+
+> 路径改写
+
+```bash
+## .env.development文件
+REACT_APP_BASE_URL=http://localhost:3000/dev
+
+## .env.production文件
+REACT_APP_BASE_URL=http://localhost:3000/prod
+## 打包文件夹名称
+BUILD_PATH=netease_cloud_music
+```
+
 ### 99. 小结
 
 1. `redux`中使用`PayloadAction`指定`payload`类型
@@ -1223,3 +1262,32 @@ reducers: {
   }
 }
 ```
+
+2. nginx 部署导致的跨域：
+   
+   > 使用 Nginx 部署项目时，可能会遇到跨域问题。这是因为默认情况下，Nginx 不允许跨域请求。
+   
+   要解决这个问题，您可以使用以下方法：
+   
+   - 添加`add_header`指令到Nginx配置中
+   
+   ```bash
+   http {
+       ...
+       add_header 'Access-Control-Allow-Origin' '*' always;
+       ...
+   }
+   
+   server {
+       ...
+       location / {
+           add_header 'Access-Control-Allow-Origin' 'http://example.com';
+           ...
+       }
+       ...
+   }
+   ```
+   
+   > - 允许**所有域名**的请求访问您的Nginx服务器，可以将该指令添加到全局`http`块中。
+   >
+   > - 如果您只想**允许特定域名**的请求访问您的服务器，可以将该指令添加到您的`servers`块中，并将域名替换为您想要允许的域名。

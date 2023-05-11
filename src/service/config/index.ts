@@ -1,5 +1,6 @@
 // 1. 手动切换
 // export const BASE_URL = 'http://codercba.com:9002'
+// const BASE_URL = 'http://localhost:3000'
 export const TIME_OUT = 10000
 
 // 2. 利用webpack根据当前依赖环境进行判断
