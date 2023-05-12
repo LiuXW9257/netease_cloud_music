@@ -6,8 +6,15 @@ export function getBanners() {
 }
 
 // 获取热门推荐
-export function getHotRecommend(limit: number) {
+export function getHotRecommend(limit = 8) {
   return req.get({
     url: `/personalized?limit=${limit}`
+  })
+}
+
+// 新碟上架
+export function getNewAlbum() {
+  return req.get({
+    url: '/album/newest'
   })
 }

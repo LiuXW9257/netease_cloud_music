@@ -5,6 +5,7 @@ import { useAppDispatch } from '@/store/hooks'
 import TopBanner from './child-cpns/top-banner'
 import HotRecommend from './child-cpns/hot-recommend'
 import { RecommendLeft, RecommendSection } from './style'
+import NewAlbum from './child-cpns/new-album'
 
 interface IProps {
   children?: ReactNode
@@ -23,6 +24,7 @@ const Recommend: React.FC<IProps> = () => {
       <RecommendSection className="wrap-v2">
         <RecommendLeft>
           <HotRecommend />
+          <NewAlbum />
         </RecommendLeft>
       </RecommendSection>
     </div>

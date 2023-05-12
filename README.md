@@ -1259,14 +1259,12 @@ BUILD_PATH=netease_cloud_music
   - css 伪类选择器`last-child`控制其隐藏
   - 通过 js 判断`id`是不是最后一个，如果是，就不显示`|`所在的标签
 
-
-
-### 16. item-v1
+### 16. 热门推荐 item-v1
 
 ![image-20230511231051266](assets/image-20230511231051266.png)
 
 - 网易云提供的图片获取方式可以添加参数，以便获取对应尺寸的图片，有利于页面加载`?param=140y140`
-- ts中默认参数值，即：参数可选（可以传）
+- ts 中默认参数值，即：参数可选（可以传）
 
 ```ts
 // 优化图片获取路径
@@ -1277,11 +1275,14 @@ export function formatGetImg(url: string, width: number, height = width) {
 
 - 提取公用方法
 
+### 17. 新碟上架轮播图
 
+![image-20230512162920911](assets/image-20230512162920911.png)
 
-
-
-
+> 由于使用antd走马灯，`Carousel`里面的第一层`div`会被强制设置为`inline-block`，为了让里面的`item`自定义排列
+>
+> - 对该层`div`自定义`display:flex !important`
+> - 在该`div`内嵌一个`div`
 
 ### 99. 小结
 

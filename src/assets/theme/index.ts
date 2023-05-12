@@ -4,6 +4,13 @@ const theme = {
     secondary: ''
   },
   size: {},
-  mixin: {}
+  mixin: {
+    // 超出省略
+    overEllipsis: `
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    `
+  }
 }
 export default theme
