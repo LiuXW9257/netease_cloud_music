@@ -1279,10 +1279,70 @@ export function formatGetImg(url: string, width: number, height = width) {
 
 ![image-20230512162920911](assets/image-20230512162920911.png)
 
-> 由于使用antd走马灯，`Carousel`里面的第一层`div`会被强制设置为`inline-block`，为了让里面的`item`自定义排列
+> 由于使用 antd 走马灯，`Carousel`里面的第一层`div`会被强制设置为`inline-block`，为了让里面的`item`自定义排列
 >
 > - 对该层`div`自定义`display:flex !important`
 > - 在该`div`内嵌一个`div`
+
+### 18. 推荐页面榜单
+
+![image-20230512214637050](assets/image-20230512214637050.png)
+
+1. **三个数据是根据不同的id请求回来的，数据怎么处理？**
+
+   - 第一种方式：三个数据分开存储
+
+   - 第二种方式：三个数据存在同一个数组中
+
+     - 必须保证三个数据的顺序
+
+     - 必须保证都请求回来再渲染页面
+
+       > 使用`Promise.all`
+       >
+       > - `Promise.all(promise: Promise[])`接受一个`Promise`类型的数组
+       > - `New Promise<any>()`  ` new`时必须传入类型
+
+       ```ts
+       // 获取榜单数据
+       // 将三个榜单数据放在一个数组中
+       // 1. 全部回来以后再 dispatch
+       // 2. 保证数据顺序 upRanking、newSongsRanking、originalRanking
+       const rankMap = {
+         upRanking: 19723756, // 飙升榜
+         newSongsRanking: 3779629, // 新歌榜
+         originalRanking: 2884035 // 原创榜
+       }
+       
+       export const fetchRecommendRankingData = createAsyncThunk(
+         'fetchRecommendRankingData',
+         (_, { dispatch }) => {
+           const promise: Promise<any>[] = []
+           Object.values(rankMap).forEach((id) => {
+             promise.push(getRankingList(id))
+           })
+           Promise.all(promise).then((res) => {
+             const playlists = res.map((item) => item.playlist)
+             dispatch(updateRankings(playlists))
+           })
+         }
+       )
+       ```
+
+2. `hover`**时超出隐藏，并显示省略号**
+
+   ![image-20230512214723778](assets/image-20230512214723778.png)
+
+   1. 最外层`div` `flex`布局
+   2. 内层为`songs-name` 和 `hover`显示 两个子标签都为`flex`布局
+   3. `songs-name` `flex=1`在操作按钮显示时方便自动获取新的宽度
+   4. 给`songs-name` 设置强制一行，超出`...`
+
+3. 前三名，不同颜色
+
+> 伪类选择器选择前三`:nth-child(3-n)`
+
+
 
 ### 99. 小结
 
