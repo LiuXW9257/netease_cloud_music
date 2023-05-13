@@ -1346,7 +1346,47 @@ export function formatGetImg(url: string, width: number, height = width) {
 
 ![image-20230513144638559](assets/image-20230513144638559.png)
 
+1. ts 中给 styled传参
 
+   ```tsx
+   <BarControl playState={playState}></BarControl>
+   ```
+
+   ```ts
+   interface IBarControl {
+     playState: boolean
+   }
+   
+   export const BarControl = styled.div<IBarControl>``
+   ```
+
+   > 需要声明接受
+
+2. 使用`<audio>`标签
+
+   1. 不添加`controls`属性，默认不显示
+   2. 首次加载浏览器不允许自动播放
+   3. `ts`中使用`ref`获取该标签时，需要类型`<HTMLAudioElement>`
+
+   ```tsx
+   const playerRef = useRef<HTMLAudioElement>(null)
+   
+   // 控制音乐播放与暂停
+   const handlePlayMusic = () => {
+     playState
+       ? playerRef.current?.pause()
+     : playerRef.current?.play().catch((err) => {
+       setPlayState(false)
+       console.log('歌曲播放失败', err)
+     })
+     setPlayState(!playState)
+   }
+   
+   <audio ref={playerRef} onTimeUpdate={handleTimeUpdate} />
+   ```
+
+   4. onTimeUpdate回调获取当前播放进度
+   5. `.play()`方法返回值是一个`Promise`表示播放成功与否
 
 ### 99. 小结
 

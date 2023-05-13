@@ -15,7 +15,7 @@ const RankingListItem: React.FC<IProps> = (props: IProps) => {
     <RankingItemWrapper>
       <div className="header">
         <div className="image">
-          <img src={formatGetImg(dataInfo.coverImgUrl, 80)} alt="" />
+          <img src={formatGetImg(dataInfo?.coverImgUrl, 80)} alt="" />
           {/* TODO 后期修改为Link */}
           <a href="" className="image_cover"></a>
         </div>

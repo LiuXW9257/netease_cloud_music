@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import recommendReducer from './modules/recommend'
-
+import playerSlice from './modules/player'
 const store = configureStore({
   reducer: {
-    recommend: recommendReducer
+    recommend: recommendReducer,
+    player: playerSlice
   }
 })
 type GetStateFnType = typeof store.getState

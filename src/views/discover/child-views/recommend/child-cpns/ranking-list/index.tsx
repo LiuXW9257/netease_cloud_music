@@ -16,7 +16,7 @@ const RankingList: React.FC<IProps> = () => {
       <TitleToolbar title="榜单" more="更多" morePath="/discover/ranking" />
       <div className="content">
         {rankings.map((item) => {
-          return <RankingListItem key={item.id} dataInfo={item} />
+          return <RankingListItem key={item?.id} dataInfo={item} />
         })}
       </div>
     </RankingWrapper>

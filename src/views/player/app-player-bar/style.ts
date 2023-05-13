@@ -13,16 +13,22 @@ export const PlayerBarWrapper = styled.div`
 
   > .content {
     display: flex;
-    align-items: center;
     justify-content: space-between;
+    align-items: center;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     bottom: 0;
+    /* margin-top: 5px; */
     height: 47px;
   }
 `
-export const BarControl = styled.div`
+
+interface IBarControl {
+  playState: boolean
+}
+
+export const BarControl = styled.div<IBarControl>`
   display: flex;
   align-items: center;
 
@@ -30,6 +36,7 @@ export const BarControl = styled.div`
   .next {
     width: 28px;
     height: 28px;
+    cursor: pointer;
   }
 
   .prev {
@@ -40,7 +47,10 @@ export const BarControl = styled.div`
     width: 36px;
     height: 36px;
     margin: 0 8px;
-    background-position: 0 -165px; // '-204px'
+    background-position: ${(props) => {
+      return props.playState ? '0 -165px' : '0 -204px'
+    }};
+    cursor: pointer;
   }
 
   .next {
