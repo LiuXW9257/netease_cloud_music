@@ -1288,7 +1288,7 @@ export function formatGetImg(url: string, width: number, height = width) {
 
 ![image-20230512214637050](assets/image-20230512214637050.png)
 
-1. **三个数据是根据不同的id请求回来的，数据怎么处理？**
+1. **三个数据是根据不同的 id 请求回来的，数据怎么处理？**
 
    - 第一种方式：三个数据分开存储
 
@@ -1301,7 +1301,7 @@ export function formatGetImg(url: string, width: number, height = width) {
        > 使用`Promise.all`
        >
        > - `Promise.all(promise: Promise[])`接受一个`Promise`类型的数组
-       > - `New Promise<any>()`  ` new`时必须传入类型
+       > - `New Promise<any>()` ` new`时必须传入类型
 
        ```ts
        // 获取榜单数据
@@ -1313,7 +1313,7 @@ export function formatGetImg(url: string, width: number, height = width) {
          newSongsRanking: 3779629, // 新歌榜
          originalRanking: 2884035 // 原创榜
        }
-       
+    
        export const fetchRecommendRankingData = createAsyncThunk(
          'fetchRecommendRankingData',
          (_, { dispatch }) => {
@@ -1341,6 +1341,10 @@ export function formatGetImg(url: string, width: number, height = width) {
 3. 前三名，不同颜色
 
 > 伪类选择器选择前三`:nth-child(3-n)`
+
+### 19. 播放栏
+
+![image-20230513144638559](assets/image-20230513144638559.png)
 
 
 
