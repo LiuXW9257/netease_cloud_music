@@ -63,6 +63,15 @@ const AppPlayerBar: React.FC<IProps> = () => {
     setCurrentPlayTime(currentTime * 1000)
   }
 
+  // slider进度修改后的回调函数
+  const handleSliderChange = (value: number) => {
+    console.log(value)
+    // 修改进度条
+    setProgress(value)
+    // 修改歌曲真实播放进度
+    playerRef.current!.currentTime = (value / 100) * (duration / 1000)
+  }
+
   return (
     <PlayerWrapper className="sprite_playbar">
       <div className="content wrap-v2">
@@ -88,7 +97,12 @@ const AppPlayerBar: React.FC<IProps> = () => {
               <span className="singer-name">{currentSong?.ar[0]?.name}</span>
             </div>
             <div className="progress-bar">
-              <Slider tooltip={{ open: false }} value={progress} step={0.5} />
+              <Slider
+                tooltip={{ open: false }}
+                value={progress}
+                step={0.5}
+                onAfterChange={handleSliderChange}
+              />
               <div className="time">
                 <span className="current">{formatTime(currentPlayTime)}</span>
                 <span className="divider">/</span>
