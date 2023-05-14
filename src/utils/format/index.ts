@@ -13,3 +13,15 @@ export function formatCount(count: number) {
 export function formatGetImg(url: string, width: number, height = width) {
   return url + `?param=${width}y${height}`
 }
+
+// 事件格式化 time 单位是毫秒
+export function formatTime(time: number) {
+  const minutes = Math.floor(time / 1000 / 60)
+  // 秒 取整后 mod 60
+  const seconds = Math.floor(time / 1000) % 60
+
+  const m = String(minutes).padStart(2, '0')
+  const s = String(seconds).padStart(2, '0')
+
+  return m + ':' + s
+}

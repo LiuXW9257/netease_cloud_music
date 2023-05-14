@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom'
 import { Slider } from 'antd'
 import { BarControl, BarOperator, BarPlayInfo, PlayerBarWrapper } from './style'
 import { useAppSelector } from '@/store/hooks'
-import { formatGetImg } from '@/utils/format'
+import { formatGetImg, formatTime } from '@/utils/format'
 import { getMusicResouceById } from '@/utils/player'
 
 interface IProps {
@@ -21,6 +21,8 @@ const AppPlayerBar: React.FC<IProps> = () => {
   const [duration, setDuration] = useState(0)
   // 歌曲进度
   const [progress, setProgress] = useState(0)
+  // 当前播放时长
+  const [currentPlayTime, setCurrentPlayTime] = useState(0)
 
   useEffect(() => {
     // 第一次加载 和 音乐切换以后
@@ -56,6 +58,8 @@ const AppPlayerBar: React.FC<IProps> = () => {
     const currentTime = playerRef.current?.currentTime ?? 0
 
     setProgress(((currentTime * 1000) / duration) * 100)
+    // 设置为毫秒
+    setCurrentPlayTime(currentTime * 1000)
   }
 
   return (
@@ -85,9 +89,9 @@ const AppPlayerBar: React.FC<IProps> = () => {
             <div className="progress">
               <Slider step={0.5} value={progress} />
               <div className="time">
-                <span className="current">00:45</span>
+                <span className="current">{formatTime(currentPlayTime)}</span>
                 <span className="divider">/</span>
-                <span className="duration">04:33</span>
+                <span className="duration">{formatTime(duration)}</span>
               </div>
             </div>
           </div>
