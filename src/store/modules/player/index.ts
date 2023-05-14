@@ -6,14 +6,14 @@ interface PlayerState {
 
 const initialState: PlayerState = {
   currentSong: {
-    name: '海阔天空',
-    id: 346089,
+    name: '我记得',
+    id: 1974443814,
     pst: 0,
     t: 0,
     ar: [
       {
-        id: 11127,
-        name: 'Beyond',
+        id: 6731,
+        name: '赵雷',
         tns: [],
         alias: []
       }
@@ -21,53 +21,53 @@ const initialState: PlayerState = {
     alia: [],
     pop: 100,
     st: 0,
-    rt: '600902000004240302',
+    rt: '',
     fee: 8,
-    v: 49,
+    v: 4,
     crbt: null,
     cf: '',
     al: {
-      id: 34110,
-      name: 'Beyond 25th Anniversary',
+      id: 150127127,
+      name: '署前街少年',
       picUrl:
-        'https://p2.music.126.net/zZtUDuWk6qIe3ezMt4UMjg==/109951165796417308.jpg',
+        'https://p2.music.126.net/FCWD6ibS2JK2B3QAnXuzwQ==/109951167805892385.jpg',
       tns: [],
-      pic_str: '109951165796417308',
-      pic: 109951165796417310
+      pic_str: '109951167805892385',
+      pic: 109951167805892380
     },
-    dt: 322560,
+    dt: 329891,
     h: {
       br: 320000,
       fid: 0,
-      size: 12905578,
-      vd: -49200,
+      size: 13198150,
+      vd: -50155,
       sr: 44100
     },
     m: {
       br: 192000,
       fid: 0,
-      size: 7743364,
-      vd: -46622,
+      size: 7918907,
+      vd: -47545,
       sr: 44100
     },
     l: {
       br: 128000,
       fid: 0,
-      size: 5162257,
-      vd: -44981,
+      size: 5279286,
+      vd: -45763,
       sr: 44100
     },
     sq: {
-      br: 870405,
+      br: 1581400,
       fid: 0,
-      size: 35094811,
-      vd: -49193,
+      size: 65211331,
+      vd: -50153,
       sr: 44100
     },
     hr: null,
     a: null,
-    cd: '03',
-    no: 6,
+    cd: '01',
+    no: 5,
     rtUrl: null,
     ftype: 0,
     rtUrls: [],
@@ -79,7 +79,7 @@ const initialState: PlayerState = {
     originSongSimpleData: null,
     tagPicList: null,
     resourceState: true,
-    version: 49,
+    version: 4,
     songJumpInfo: null,
     entertainmentTags: null,
     awardTags: null,
@@ -87,22 +87,17 @@ const initialState: PlayerState = {
     noCopyrightRcmd: null,
     rtype: 0,
     rurl: null,
-    mv: 5501497,
     mst: 9,
-    cp: 7002,
-    publishTime: 1205164800000
+    cp: 2708856,
+    mv: 0,
+    publishTime: 1661702400000
   }
 }
 
 const playerSlice = createSlice({
   name: 'player',
   initialState,
-  reducers: {
-    updateCurrentSong(state, { payload }) {
-      state.currentSong = payload
-    }
-  }
+  reducers: {}
 })
 
-export const { updateCurrentSong } = playerSlice.actions
 export default playerSlice.reducer

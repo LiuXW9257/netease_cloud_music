@@ -1,9 +1,9 @@
-import React, { memo, useEffect, useRef, useState } from 'react'
+import React, { memo, useRef, useState, useEffect } from 'react'
 import type { ReactNode } from 'react'
-import { shallowEqual } from 'react-redux'
 import { NavLink } from 'react-router-dom'
+import { shallowEqual } from 'react-redux'
 import { Slider } from 'antd'
-import { BarControl, BarOperator, BarPlayInfo, PlayerBarWrapper } from './style'
+import { BarControl, BarOperator, BarPlayInfo, PlayerWrapper } from './style'
 import { useAppSelector } from '@/store/hooks'
 import { formatGetImg, formatTime } from '@/utils/format'
 import { getMusicResouceById } from '@/utils/player'
@@ -14,6 +14,7 @@ interface IProps {
 
 const AppPlayerBar: React.FC<IProps> = () => {
   const { currentSong } = useAppSelector((state) => state.player, shallowEqual)
+
   const playerRef = useRef<HTMLAudioElement>(null)
   // 歌曲播放状态 true 正在播放 false 没有播放
   const [playState, setPlayState] = useState(false)
@@ -63,7 +64,7 @@ const AppPlayerBar: React.FC<IProps> = () => {
   }
 
   return (
-    <PlayerBarWrapper className="sprite_playbar">
+    <PlayerWrapper className="sprite_playbar">
       <div className="content wrap-v2">
         <BarControl playState={playState}>
           <button className="btn sprite_playbar prev"></button>
@@ -74,7 +75,7 @@ const AppPlayerBar: React.FC<IProps> = () => {
           <button className="btn sprite_playbar next"></button>
         </BarControl>
         <BarPlayInfo>
-          <NavLink to={'/discover/player'}>
+          <NavLink to="/discover/player">
             <img
               className="image"
               src={formatGetImg(currentSong.al.picUrl, 50)}
@@ -86,8 +87,8 @@ const AppPlayerBar: React.FC<IProps> = () => {
               <span className="song-name">{currentSong.name}</span>
               <span className="singer-name">{currentSong?.ar[0]?.name}</span>
             </div>
-            <div className="progress">
-              <Slider step={0.5} value={progress} />
+            <div className="progress-bar">
+              <Slider tooltip={{ open: false }} value={progress} step={0.5} />
               <div className="time">
                 <span className="current">{formatTime(currentPlayTime)}</span>
                 <span className="divider">/</span>
@@ -109,7 +110,7 @@ const AppPlayerBar: React.FC<IProps> = () => {
         </BarOperator>
       </div>
       <audio ref={playerRef} onTimeUpdate={handleTimeUpdate} />
-    </PlayerBarWrapper>
+    </PlayerWrapper>
   )
 }
 

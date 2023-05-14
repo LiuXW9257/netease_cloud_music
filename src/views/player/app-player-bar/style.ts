@@ -1,9 +1,7 @@
 import styled from 'styled-components'
 
-export const PlayerBarWrapper = styled.div`
-  /* 可视窗口定位 */
+export const PlayerWrapper = styled.div`
   position: fixed;
-  z-index: 99;
   left: 0;
   right: 0;
   bottom: 0;
@@ -11,15 +9,14 @@ export const PlayerBarWrapper = styled.div`
   background-position: 0 0;
   background-repeat: repeat;
 
-  > .content {
+  .content {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
     bottom: 0;
-    /* margin-top: 5px; */
     height: 47px;
   }
 `
@@ -36,7 +33,6 @@ export const BarControl = styled.div<IBarControl>`
   .next {
     width: 28px;
     height: 28px;
-    cursor: pointer;
   }
 
   .prev {
@@ -47,10 +43,9 @@ export const BarControl = styled.div<IBarControl>`
     width: 36px;
     height: 36px;
     margin: 0 8px;
-    background-position: ${(props) => {
-      return props.playState ? '0 -165px' : '0 -204px'
-    }};
-    cursor: pointer;
+    /* background-position: 0 -165px; // '-204px' */
+    background-position: ${(props) =>
+      props.playState ? '0 -165px' : '0 -204px'};
   }
 
   .next {
@@ -86,7 +81,7 @@ export const BarPlayInfo = styled.div`
       }
     }
 
-    .progress {
+    .progress-bar {
       display: flex;
       align-items: center;
 

@@ -32,7 +32,7 @@ const NewAlbum: React.FC<IProps> = () => {
           }}
         ></button>
         <div className="album">
-          <Carousel ref={bannerRef} speed={1500}>
+          <Carousel ref={bannerRef} speed={1500} dots={false}>
             {[0, 1].map((item) => {
               return (
                 <div key={item}>

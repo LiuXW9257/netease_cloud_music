@@ -1014,7 +1014,7 @@ export const HeaderWrapper = styled.div`
 1. 安装
 
 ```bash
-npm i antd@4.7.0
+npm i antd@4.23.6
 ```
 
 2. 引入样式
@@ -1313,7 +1313,7 @@ export function formatGetImg(url: string, width: number, height = width) {
          newSongsRanking: 3779629, // 新歌榜
          originalRanking: 2884035 // 原创榜
        }
-    
+        
        export const fetchRecommendRankingData = createAsyncThunk(
          'fetchRecommendRankingData',
          (_, { dispatch }) => {
