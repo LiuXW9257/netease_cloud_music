@@ -25,6 +25,8 @@ const AppPlayerBar: React.FC<IProps> = () => {
   // 当前播放时长
   const [currentPlayTime, setCurrentPlayTime] = useState(0)
 
+  const [isSliding, setIsSliding] = useState(false)
+
   useEffect(() => {
     // 第一次加载 和 音乐切换以后
     if (playerRef.current) {
@@ -58,18 +60,27 @@ const AppPlayerBar: React.FC<IProps> = () => {
   const handleTimeUpdate = () => {
     const currentTime = playerRef.current?.currentTime ?? 0
 
-    setProgress(((currentTime * 1000) / duration) * 100)
-    // 设置为毫秒
-    setCurrentPlayTime(currentTime * 1000)
+    if (!isSliding) {
+      setProgress(((currentTime * 1000) / duration) * 100)
+      // 设置为毫秒
+      setCurrentPlayTime(currentTime * 1000)
+    }
   }
 
   // slider进度修改后的回调函数
-  const handleSliderChange = (value: number) => {
-    console.log(value)
+  const handleSliderAfterChange = (value: number) => {
     // 修改进度条
     setProgress(value)
     // 修改歌曲真实播放进度
     playerRef.current!.currentTime = (value / 100) * (duration / 1000)
+    setIsSliding(false)
+  }
+
+  // 进度调拖动的回调
+  const handleSliderChanging = (value: number) => {
+    setIsSliding(true)
+    setProgress(value)
+    setCurrentPlayTime((value / 100) * duration)
   }
 
   return (
@@ -101,7 +112,8 @@ const AppPlayerBar: React.FC<IProps> = () => {
                 tooltip={{ open: false }}
                 value={progress}
                 step={0.5}
-                onAfterChange={handleSliderChange}
+                onAfterChange={handleSliderAfterChange}
+                onChange={handleSliderChanging}
               />
               <div className="time">
                 <span className="current">{formatTime(currentPlayTime)}</span>

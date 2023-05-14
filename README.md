@@ -1388,6 +1388,41 @@ export function formatGetImg(url: string, width: number, height = width) {
    4. onTimeUpdate回调获取当前播放进度
    5. `.play()`方法返回值是一个`Promise`表示播放成功与否
 
+### 20. 点击、拖拽进度条
+
+> 因为拖拽中，需要动态修改当前时间，所以我们需要添加一个变量来记录当前是否处于拖拽状态
+
+```tsx
+// 控制进度条
+const handleTimeUpdate = () => {
+  const currentTime = playerRef.current?.currentTime ?? 0
+
+  if (!isSliding) {
+    setProgress(((currentTime * 1000) / duration) * 100)
+    // 设置为毫秒
+    setCurrentPlayTime(currentTime * 1000)
+  }
+}
+
+// slider进度修改后的回调函数
+const handleSliderAfterChange = (value: number) => {
+  // 修改进度条
+  setProgress(value)
+  // 修改歌曲真实播放进度
+  playerRef.current!.currentTime = (value / 100) * (duration / 1000)
+  setIsSliding(false)
+}
+
+// 进度调拖动的回调
+const handleSliderChanging = (value: number) => {
+  setIsSliding(true)
+  setProgress(value)
+  setCurrentPlayTime((value / 100) * duration)
+}
+```
+
+
+
 ### 99. 小结
 
 1. `redux`中使用`PayloadAction`指定`payload`类型
