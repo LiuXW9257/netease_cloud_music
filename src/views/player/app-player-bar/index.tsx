@@ -2,18 +2,23 @@ import React, { memo, useRef, useState, useEffect } from 'react'
 import type { ReactNode } from 'react'
 import { NavLink } from 'react-router-dom'
 import { shallowEqual } from 'react-redux'
-import { Slider } from 'antd'
+import { Slider, message } from 'antd'
 import { BarControl, BarOperator, BarPlayInfo, PlayerWrapper } from './style'
-import { useAppSelector } from '@/store/hooks'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { formatGetImg, formatTime } from '@/utils/format'
 import { getMusicResouceById } from '@/utils/player'
+import { updateLyricIndex } from '@/store/modules/player'
 
 interface IProps {
   children?: ReactNode
 }
 
 const AppPlayerBar: React.FC<IProps> = () => {
-  const { currentSong } = useAppSelector((state) => state.player, shallowEqual)
+  const { currentSong, lyrics, lyricIndex } = useAppSelector(
+    (state) => state.player,
+    shallowEqual
+  )
+  const dispatch = useAppDispatch()
 
   const playerRef = useRef<HTMLAudioElement>(null)
   // 歌曲播放状态 true 正在播放 false 没有播放
@@ -24,7 +29,7 @@ const AppPlayerBar: React.FC<IProps> = () => {
   const [progress, setProgress] = useState(0)
   // 当前播放时长
   const [currentPlayTime, setCurrentPlayTime] = useState(0)
-
+  // 进度条是否在拖拽中
   const [isSliding, setIsSliding] = useState(false)
 
   useEffect(() => {
@@ -56,7 +61,7 @@ const AppPlayerBar: React.FC<IProps> = () => {
     setPlayState(!playState)
   }
 
-  // 控制进度条
+  // 播放一段以后的回调
   const handleTimeUpdate = () => {
     const currentTime = playerRef.current?.currentTime ?? 0
 
@@ -65,6 +70,22 @@ const AppPlayerBar: React.FC<IProps> = () => {
       // 设置为毫秒
       setCurrentPlayTime(currentTime * 1000)
     }
+    let index = lyrics.length - 1
+    for (let i = 0; i < lyrics.length; i++) {
+      const lyric = lyrics[i]
+      if (lyric.time > currentTime * 1000) {
+        index = i - 1
+        break
+      }
+    }
+    if (index === lyricIndex || index === -1) return
+    // console.log(lyrics[index]?.text)
+    message.open({
+      content: lyrics[index]?.text,
+      key: 'lyric',
+      duration: 0
+    })
+    dispatch(updateLyricIndex(index))
   }
 
   // slider进度修改后的回调函数

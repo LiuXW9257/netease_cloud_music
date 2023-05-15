@@ -1,7 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { getLyric, getMusicDetail } from '@/service/modules/palyers'
+import { ILyric } from './type'
+import { lyricParse } from '@/utils/lyric-parse'
 
 interface PlayerState {
   currentSong: any
+  lyrics: ILyric[]
+  lyricIndex: number
 }
 
 const initialState: PlayerState = {
@@ -91,13 +96,42 @@ const initialState: PlayerState = {
     cp: 2708856,
     mv: 0,
     publishTime: 1661702400000
-  }
+  },
+  lyrics: [],
+  lyricIndex: -1
 }
+
+export const fetchCurrentSong = createAsyncThunk(
+  'fetchCurrentSong',
+  (id: number, { dispatch }) => {
+    // 1.获取音乐详情
+    getMusicDetail(id).then((res: any) => {
+      dispatch(updateCurrentSong(res.songs[0]))
+    })
+    // 2.获取音乐歌词
+    getLyric(id).then((res: any) => {
+      // 解析歌词
+      const lyric = lyricParse(res.lrc.lyric)
+      dispatch(updateLyric(lyric))
+    })
+  }
+)
 
 const playerSlice = createSlice({
   name: 'player',
   initialState,
-  reducers: {}
+  reducers: {
+    updateCurrentSong(state, { payload }) {
+      state.currentSong = payload
+    },
+    updateLyric(state, { payload }) {
+      state.lyrics = payload
+    },
+    updateLyricIndex(state, { payload }) {
+      state.lyricIndex = payload
+    }
+  }
 })
-
+export const { updateCurrentSong, updateLyric, updateLyricIndex } =
+  playerSlice.actions
 export default playerSlice.reducer

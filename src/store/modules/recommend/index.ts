@@ -3,7 +3,7 @@ import {
   getHotRecommend,
   getNewAlbum,
   getRankingList
-} from '@/service/mosules/recommend'
+} from '@/service/modules/recommend'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import type { IBanner } from './type'
 
