@@ -7,17 +7,26 @@ import { BarControl, BarOperator, BarPlayInfo, PlayerWrapper } from './style'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { formatGetImg, formatTime } from '@/utils/format'
 import { getMusicResouceById } from '@/utils/player'
-import { updateLyricIndex } from '@/store/modules/player'
+import {
+  fetchCurrentSong,
+  updateLyricIndex,
+  updatePlayModel
+} from '@/store/modules/player'
+import { IPlayModel } from '@/store/modules/player/type'
 
 interface IProps {
   children?: ReactNode
 }
 
 const AppPlayerBar: React.FC<IProps> = () => {
-  const { currentSong, lyrics, lyricIndex } = useAppSelector(
-    (state) => state.player,
-    shallowEqual
-  )
+  const {
+    currentSong,
+    lyrics,
+    lyricIndex,
+    playSongList,
+    playSongIndex,
+    playModel
+  } = useAppSelector((state) => state.player, shallowEqual)
   const dispatch = useAppDispatch()
 
   const playerRef = useRef<HTMLAudioElement>(null)
@@ -59,6 +68,28 @@ const AppPlayerBar: React.FC<IProps> = () => {
           console.log('歌曲播放失败', err)
         })
     setPlayState(!playState)
+  }
+
+  // 控制音乐切换
+  const handleChangePlayedMusic = (isNext = true) => {
+    //1. 判断播放模式是否是随机
+    if (playModel === IPlayModel.ListRandom) {
+      const index = Math.floor(Math.random() * playSongList.length)
+      dispatch(fetchCurrentSong(playSongList[index].id))
+    } else {
+      let nextSongId = currentSong.id
+      // 获取下一首歌的id
+      if (isNext) {
+        nextSongId = playSongList[(playSongIndex + 1) % playSongList.length].id
+      } else {
+        nextSongId =
+          playSongList[
+            (playSongIndex - 1 + playSongList.length) % playSongList.length
+          ].id
+      }
+      // 切换
+      dispatch(fetchCurrentSong(nextSongId))
+    }
   }
 
   // 播放一段以后的回调
@@ -104,16 +135,42 @@ const AppPlayerBar: React.FC<IProps> = () => {
     setCurrentPlayTime((value / 100) * duration)
   }
 
+  const handleChangePalyModel = () => {
+    dispatch(updatePlayModel((playModel + 1) % 3))
+  }
+
+  // 自动播放结束
+  const handlePlayTimeEnded = () => {
+    // 判断播放模式
+    if (playModel === IPlayModel.singleLoop) {
+      // 重新播放
+      playerRef.current!.currentTime = 0
+      playerRef.current?.play()
+    } else {
+      handleChangePlayedMusic(true)
+    }
+  }
+
   return (
     <PlayerWrapper className="sprite_playbar">
       <div className="content wrap-v2">
         <BarControl playState={playState}>
-          <button className="btn sprite_playbar prev"></button>
+          <button
+            className="btn sprite_playbar prev"
+            onClick={() => {
+              handleChangePlayedMusic(false)
+            }}
+          ></button>
           <button
             className="btn sprite_playbar play"
             onClick={handlePlayMusic}
           ></button>
-          <button className="btn sprite_playbar next"></button>
+          <button
+            className="btn sprite_playbar next"
+            onClick={() => {
+              handleChangePlayedMusic()
+            }}
+          ></button>
         </BarControl>
         <BarPlayInfo>
           <NavLink to="/discover/player">
@@ -144,19 +201,28 @@ const AppPlayerBar: React.FC<IProps> = () => {
             </div>
           </div>
         </BarPlayInfo>
-        <BarOperator>
+        <BarOperator playModel={playModel}>
           <div className="left">
             <button className="btn sprite_playbar favor"></button>
             <button className="btn sprite_playbar share"></button>
           </div>
           <div className="right sprite_playbar">
             <button className="btn sprite_playbar volume"></button>
-            <button className="btn sprite_playbar loop"></button>
-            <button className="btn sprite_playbar playlist"></button>
+            <button
+              className="btn sprite_playbar loop"
+              onClick={handleChangePalyModel}
+            ></button>
+            <button className="btn sprite_playbar playlist">
+              {playSongList?.length}
+            </button>
           </div>
         </BarOperator>
       </div>
-      <audio ref={playerRef} onTimeUpdate={handleTimeUpdate} />
+      <audio
+        ref={playerRef}
+        onTimeUpdate={handleTimeUpdate}
+        onEnded={handlePlayTimeEnded}
+      />
     </PlayerWrapper>
   )
 }

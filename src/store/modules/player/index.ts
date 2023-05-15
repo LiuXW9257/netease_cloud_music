@@ -3,7 +3,7 @@ import { getLyric, getMusicDetail } from '@/service/modules/palyers'
 import { ILyric } from './type'
 import { lyricParse } from '@/utils/lyric-parse'
 import { RootState } from '@/store'
-import { stat } from 'fs'
+import { IPlayModel } from './type'
 
 interface IPlayerState {
   currentSong: any
@@ -11,6 +11,7 @@ interface IPlayerState {
   lyricIndex: number
   playSongList: any[]
   playSongIndex: number
+  playModel: IPlayModel
 }
 
 const initialState: IPlayerState = {
@@ -279,7 +280,8 @@ const initialState: IPlayerState = {
       publishTime: 1477238400007
     }
   ],
-  playSongIndex: 0
+  playSongIndex: 0,
+  playModel: IPlayModel.listLoop
 }
 
 export const fetchCurrentSong = createAsyncThunk<
@@ -332,6 +334,9 @@ const playerSlice = createSlice({
     },
     updatePlaySongList(state, { payload }) {
       state.playSongList = payload
+    },
+    updatePlayModel(state, { payload }) {
+      state.playModel = payload
     }
   }
 })
@@ -340,6 +345,7 @@ export const {
   updateLyric,
   updateLyricIndex,
   updatePlaySongIndex,
-  updatePlaySongList
+  updatePlaySongList,
+  updatePlayModel
 } = playerSlice.actions
 export default playerSlice.reducer

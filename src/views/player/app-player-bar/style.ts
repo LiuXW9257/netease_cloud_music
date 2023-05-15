@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { IPlayModel } from '@/store/modules/player/type'
 
 export const PlayerWrapper = styled.div`
   position: fixed;
@@ -121,8 +122,11 @@ export const BarPlayInfo = styled.div`
     }
   }
 `
+interface IBarOperator {
+  playModel: IPlayModel
+}
 
-export const BarOperator = styled.div`
+export const BarOperator = styled.div<IBarOperator>`
   display: flex;
   align-items: center;
   position: relative;
@@ -158,7 +162,17 @@ export const BarOperator = styled.div`
     }
 
     .loop {
-      background-position: -66px -248px;
+      /* background-position: -66px -248px; */
+      background-position: ${(props) => {
+        switch (props.playModel) {
+          case IPlayModel.ListRandom:
+            return '-66px -248px'
+          case IPlayModel.singleLoop:
+            return '-66px -344px'
+          default:
+            return '-3px -344px'
+        }
+      }};
     }
 
     .playlist {

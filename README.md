@@ -1479,7 +1479,9 @@ export const fetchCurrentSong = createAsyncThunk<
 >   export default store
 >   ```
 
+### 22. 不同模式下切换歌曲
 
+> 由于不同模式，上一首，下一首是不同的，所以需要根据模式而定，先判定模式
 
 ### 99. 小结
 
