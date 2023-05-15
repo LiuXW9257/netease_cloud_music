@@ -3,6 +3,8 @@ import type { ReactNode } from 'react'
 import { RankingItemWrapper } from './style'
 import { formatGetImg } from '@/utils/format'
 import { Link } from 'react-router-dom'
+import { useAppDispatch } from '@/store/hooks'
+import { fetchCurrentSong } from '@/store/modules/player'
 
 interface IProps {
   children?: ReactNode
@@ -11,6 +13,11 @@ interface IProps {
 
 const RankingListItem: React.FC<IProps> = (props: IProps) => {
   const { dataInfo } = props
+  const dispatch = useAppDispatch()
+
+  function handlePlayClickedMusic(id: number) {
+    dispatch(fetchCurrentSong(id))
+  }
   return (
     <RankingItemWrapper>
       {dataInfo && (
@@ -37,7 +44,12 @@ const RankingListItem: React.FC<IProps> = (props: IProps) => {
                   <div className="info">
                     <span className="name">{item.name}</span>
                     <div className="operate">
-                      <button className="btn sprite_02 play"></button>
+                      <button
+                        className="btn sprite_02 play"
+                        onClick={() => {
+                          handlePlayClickedMusic(item.id)
+                        }}
+                      ></button>
                       <button className="btn sprite_icon2 addto"></button>
                       <button className="btn sprite_02 favor"></button>
                     </div>

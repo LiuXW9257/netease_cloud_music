@@ -1421,6 +1421,64 @@ const handleSliderChanging = (value: number) => {
 }
 ```
 
+### 21. 播放列表
+
+> ts 中在`createAsyncThunk`中获取`state`
+>
+> - 使用`getState()`
+> - 类型推断：传入参数
+
+```ts
+import { RootState } from '@/store'
+
+export const fetchCurrentSong = createAsyncThunk<
+  void,
+  number,
+  { state: RootState }
+>('fetchCurrentSong', (id, { dispatch, getState }) => {})
+```
+
+> - 第一个类型是函数的返回值
+>
+> - 第二个类型是第一个参数的类型
+>
+> - 第三个类型是`CurriedThunkApiConfig`类型
+>
+> - ```ts
+>   declare type AsyncThunkConfig = {
+>       state?: unknown;
+>       dispatch?: Dispatch;
+>       extra?: unknown;
+>       rejectValue?: unknown;
+>       serializedErrorType?: unknown;
+>       pendingMeta?: unknown;
+>       fulfilledMeta?: unknown;
+>       rejectedMeta?: unknown;
+>   };
+>   ```
+>
+> - `RootState`是推断的`state`类型
+>
+>   ```ts
+>   import { configureStore } from '@reduxjs/toolkit'
+>   import recommendReducer from './modules/recommend'
+>   import playerReducer from './modules/player'
+>   
+>   const store = configureStore({
+>     reducer: {
+>       recommend: recommendReducer,
+>       player: playerReducer
+>     }
+>   })
+>   type GetStateFnType = typeof store.getState
+>   export type DispatchType = typeof store.dispatch
+>   
+>   // 获取函数store.getState()的返回值类型
+>   export type RootState = ReturnType<GetStateFnType>
+>   
+>   export default store
+>   ```
+
 
 
 ### 99. 小结

@@ -119,14 +119,14 @@ const AppPlayerBar: React.FC<IProps> = () => {
           <NavLink to="/discover/player">
             <img
               className="image"
-              src={formatGetImg(currentSong.al.picUrl, 50)}
+              src={formatGetImg(currentSong.al?.picUrl, 50)}
               alt=""
             />
           </NavLink>
           <div className="info">
             <div className="song">
               <span className="song-name">{currentSong.name}</span>
-              <span className="singer-name">{currentSong?.ar[0]?.name}</span>
+              <span className="singer-name">{currentSong?.ar?.[0]?.name}</span>
             </div>
             <div className="progress-bar">
               <Slider
