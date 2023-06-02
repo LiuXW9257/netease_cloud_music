@@ -7,6 +7,7 @@ import AppHeader from './components/app-header'
 import AppFooter from './components/app-footer'
 import AppPlayerBar from './views/player/app-player-bar'
 import { fetchCurrentSong } from './store/modules/player'
+import AppPlayerPanel from './views/player/app-player-panel'
 
 function App() {
   const outlet = useRoutes(routes)
@@ -20,6 +21,7 @@ function App() {
     <div>
       <AppHeader />
       {outlet}
+      <AppPlayerPanel />
       <AppPlayerBar />
       <AppFooter />
     </div>
