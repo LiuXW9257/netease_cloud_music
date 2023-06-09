@@ -1,6 +1,6 @@
-## 网易云音乐笔记
+# 网易云音乐笔记
 
-### 0. 技术栈
+## 0. 技术栈
 
 - React 18
 - TS
@@ -8,13 +8,17 @@
 - Redux RTK
 - antd
 
-### 1. 创建项目
+
+
+## 1. 创建项目
 
 ```bash
 create-react-app netease_cloud_music --template typescript
 ```
 
-### 2. 项目初始化
+
+
+## 2. 项目初始化
 
 1. 配置图标
 
@@ -209,11 +213,15 @@ create-react-app netease_cloud_music --template typescript
       >
       > eslint **编译**代码时检查规范
 
-### 3. 项目结构搭建
+
+
+## 3. 项目结构搭建
 
 ![image-20230507150630107](assets/image-20230507150630107.png)
 
-### 4. css 样式重置
+
+
+## 4. css 样式重置
 
 1. 安装
 
@@ -259,7 +267,9 @@ root.render(
 )
 ```
 
-### 5. 路由配置
+
+
+## 5. 路由配置
 
 1. 安装 react-router
 
@@ -329,7 +339,7 @@ root.render(
 
 > 使用路由表`useRoutes`，需要将整个项目包裹在`<Router>`中，所以，我们需要使用`<HashRouter>/<BrowserRouter>`
 
-#### 1. 一级路由配置
+### 1. 一级路由配置
 
 1. 配置用户代码片段
 
@@ -366,7 +376,9 @@ export default memo(Template)
 
 > `<Navigate />`
 
-#### 2. 路由懒加载
+
+
+### 2. 路由懒加载
 
 > 路由组件分包处理（`import()`）
 >
@@ -395,7 +407,9 @@ const routes: RouteObject[] = [
 ]
 ```
 
-#### 3. discover 二级路由
+
+
+### 3. discover 二级路由
 
 1. **路由表**配置中的问题
 
@@ -443,7 +457,9 @@ const routes: RouteObject[] = [
    > - 和我们的方法一样，定义`lazyLoad()`方法，给每个懒加载组件包裹`<Suspense>`
    > - 二级路由不使用懒加载的形式（`可行性不大`）
 
-### 6. Redux 配置
+
+
+## 6. Redux 配置
 
 1. 安装
 
@@ -486,7 +502,7 @@ export default counterSlice.reducer
 >
 > - ts 中`createSlice`的配置对象型参数中`name`、`inittialState`、`reducers`三个属性为必须属性`extraReducers`为可选属性
 
-#### TS 中的类型推导
+### TS 中的类型推导
 
 **思路**：
 
@@ -540,7 +556,9 @@ export type DispatchType = typeof store.dispatch
 export const useAppDispatch: () => DispatchType = useDispatch
 ```
 
-### 7. 集成 axios
+
+
+## 7. 集成 axios
 
 1. 安装
 
@@ -548,7 +566,7 @@ export const useAppDispatch: () => DispatchType = useDispatch
 npm i axios
 ```
 
-#### 1. axios 封装
+### 1. axios 封装
 
 **两个难点**:
 
@@ -562,7 +580,7 @@ npm i axios
 
 2. 响应结果的类型处理(泛型)
 
-##### 1. 简单封装
+#### 1. 简单封装
 
 > 无类型判断
 
@@ -585,7 +603,9 @@ export default Request
 
 ```
 
-##### 2. 全局拦截器
+
+
+#### 2. 全局拦截器
 
 ```ts
 import axios from 'axios'
@@ -631,7 +651,7 @@ class Request {
 export default Request
 ```
 
-##### 3. 定义类型
+#### 3. 定义类型
 
 ```ts
 import type { AxiosRequestConfig, AxiosResponse } from 'axios'
@@ -649,7 +669,7 @@ export interface RequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
 }
 ```
 
-##### 4. 实例拦截器
+#### 4. 实例拦截器
 
 > 在创建实例时，将拦截器作为参数传入实例，所以，创建实例时的配置类参数，应该额外包含`interceptors`可选属性，所以创建上面定义的接口
 
@@ -688,7 +708,7 @@ export default Request
 - 实例化`Request`对象时，`config`配置项参数类型应该是我们新建的`RequestConfig`类型，而不是`AxiosRequestConfig`因为该类型没有`interceptors`属性
 - `request()`请求方法的`config`类型，仍然可以是`AxiosRequestConfig`类型
 
-##### 5. 单次请求拦截器
+#### 5. 单次请求拦截器
 
 ```ts
 import axios from 'axios'
@@ -741,7 +761,9 @@ export default Request
 
 ![image-20230508205846327](assets/image-20230508205846327.png)
 
-#### 2. axios 分装结果
+
+
+### 2. axios 分装结果
 
 `service/request/index`
 
@@ -862,7 +884,9 @@ export interface RequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
 }
 ```
 
-### 8. 环境区分
+
+
+## 8. 环境区分
 
 > 开发环境、生产环境
 
@@ -896,7 +920,9 @@ REACT_APP_BASE_URL=http://codercba.com:9002
 
 ![image-20230509093517469](assets/image-20230509093517469.png)
 
-### 9. styled-components
+
+
+## 9. styled-components
 
 ```bash
 npm install styled-components@5.3.9 -D
@@ -945,7 +971,9 @@ const AppFooter: React.FC<IProps> = () => {
 export default memo(AppFooter)
 ```
 
-### 10. 主题的定义与使用
+
+
+## 10. 主题的定义与使用
 
 1. 创建`theme.ts`
 
@@ -1009,7 +1037,9 @@ export const HeaderWrapper = styled.div`
 
 > `styled-components`中`${}`表示里面写的是`js`表达式
 
-### 11. 集成 antd
+
+
+## 11. 集成 antd
 
 1. 安装
 
@@ -1052,11 +1082,13 @@ module.exports = {
 
 > `craco.fonfig.js`中为`CracoLessPlugin`添加 options 选项
 
-### 12. AppHeader
+
+
+## 12. AppHeader
 
 ![image-20230510094512217](assets/image-20230510094512217.png)
 
-#### 1. headerLeft
+### 1. headerLeft
 
 ![image-20230510094548657](assets/image-20230510094548657.png)
 
@@ -1122,17 +1154,21 @@ module.exports = {
    - 回调函数中结构出`isActive`、`isPending`
    - `active`是我们自定义的`css`类样式
 
-#### 2. headerRight
+
+
+### 2. headerRight
 
 ![image-20230510094620756](assets/image-20230510094620756.png)
 
 > 使用`antd`
 
-### 13. Recommend Banner（轮播图）
+
+
+## 13. Recommend Banner（轮播图）
 
 ![image-20230510162930952](assets/image-20230510162930952.png)
 
-#### 1. 控制切换
+### 1. 控制切换
 
 > 需要获取到 `antd` `Carousel`组件，并调用他的切换方法`prev()` `next()`
 
@@ -1153,7 +1189,9 @@ const divRef = useRef<HTMLDivElement>(null)
 <div ref={divRef}></div>
 ```
 
-#### 2. 切换淡入
+
+
+### 2. 切换淡入
 
 1. `antd` `Carousel`组件 使用属性`effect="fade"` 默认值为`scrollx`
 
@@ -1167,7 +1205,9 @@ const divRef = useRef<HTMLDivElement>(null)
    transition: all 0.5s ease-in-out;
    ```
 
-#### 3. 重写轮播图下方的 `indicator`
+
+
+### 3. 重写轮播图下方的 `indicator`
 
 1. 关闭 antd 组件自带的样式
 2. 重写样式，定位到下方居中
@@ -1210,7 +1250,9 @@ classNames('foo', { bar: true, duck: false }, 'baz', { quux: true }) // => 'foo 
 classNames(null, false, 'bar', undefined, 0, 1, { baz: null }, '') // => 'bar 1'
 ```
 
-### 14. craco 配置代理
+
+
+## 14. craco 配置代理
 
 `craco.config.js`
 
@@ -1249,7 +1291,9 @@ REACT_APP_BASE_URL=http://localhost:3000/prod
 BUILD_PATH=netease_cloud_music
 ```
 
-### 15. TitleToolbar
+
+
+## 15. TitleToolbar
 
 ![image-20230511222448726](assets/image-20230511222448726.png)
 
@@ -1259,7 +1303,9 @@ BUILD_PATH=netease_cloud_music
   - css 伪类选择器`last-child`控制其隐藏
   - 通过 js 判断`id`是不是最后一个，如果是，就不显示`|`所在的标签
 
-### 16. 热门推荐 item-v1
+
+
+## 16. 热门推荐 item-v1
 
 ![image-20230511231051266](assets/image-20230511231051266.png)
 
@@ -1275,7 +1321,9 @@ export function formatGetImg(url: string, width: number, height = width) {
 
 - 提取公用方法
 
-### 17. 新碟上架轮播图
+
+
+## 17. 新碟上架轮播图
 
 ![image-20230512162920911](assets/image-20230512162920911.png)
 
@@ -1284,7 +1332,9 @@ export function formatGetImg(url: string, width: number, height = width) {
 > - 对该层`div`自定义`display:flex !important`
 > - 在该`div`内嵌一个`div`
 
-### 18. 推荐页面榜单
+
+
+## 18. 推荐页面榜单
 
 ![image-20230512214637050](assets/image-20230512214637050.png)
 
@@ -1342,7 +1392,9 @@ export function formatGetImg(url: string, width: number, height = width) {
 
 > 伪类选择器选择前三`:nth-child(3-n)`
 
-### 19. 播放栏
+
+
+## 19. 播放栏
 
 ![image-20230513144638559](assets/image-20230513144638559.png)
 
@@ -1388,7 +1440,9 @@ export function formatGetImg(url: string, width: number, height = width) {
    4. onTimeUpdate回调获取当前播放进度
    5. `.play()`方法返回值是一个`Promise`表示播放成功与否
 
-### 20. 点击、拖拽进度条
+
+
+## 20. 点击、拖拽进度条
 
 > 因为拖拽中，需要动态修改当前时间，所以我们需要添加一个变量来记录当前是否处于拖拽状态
 
@@ -1421,7 +1475,9 @@ const handleSliderChanging = (value: number) => {
 }
 ```
 
-### 21. 播放列表
+
+
+## 21. 播放列表
 
 > ts 中在`createAsyncThunk`中获取`state`
 >
@@ -1463,7 +1519,7 @@ export const fetchCurrentSong = createAsyncThunk<
 >   import { configureStore } from '@reduxjs/toolkit'
 >   import recommendReducer from './modules/recommend'
 >   import playerReducer from './modules/player'
->   
+>     
 >   const store = configureStore({
 >     reducer: {
 >       recommend: recommendReducer,
@@ -1472,18 +1528,51 @@ export const fetchCurrentSong = createAsyncThunk<
 >   })
 >   type GetStateFnType = typeof store.getState
 >   export type DispatchType = typeof store.dispatch
->   
+>     
 >   // 获取函数store.getState()的返回值类型
 >   export type RootState = ReturnType<GetStateFnType>
->   
+>     
 >   export default store
 >   ```
 
-### 22. 不同模式下切换歌曲
+
+
+## 22. 不同模式下切换歌曲
 
 > 由于不同模式，上一首，下一首是不同的，所以需要根据模式而定，先判定模式
 
-### 99. 小结
+
+
+## 23. 歌词面板歌词滚动
+
+![image-20230609154826123](assets/image-20230609154826123.png)
+
+1. 根据当前播放歌词的`idx`获取当前歌词所在的 div
+2. 利用`offsetTop `获取与最近一级有定位属性的父级元素的顶部的距离
+3. 将其父元素向上滚动
+4. `scrollTo`添加平滑滚动
+
+```js
+div.scrollTo({
+  top: 1000,
+  behavior: 'smooth'
+})
+```
+
+5. ts 中给通过 JS 获取的元素指定类型 `as`
+
+```ts
+// 获取当前歌词所在的 div
+const currentLyricItemEl = lyricPanelEl.current!.children[idx]
+// 计算到顶部的距离
+const gap = (currentLyricItemEl as HTMLDivElement).offsetTop
+```
+
+
+
+
+
+## 99. 小结
 
 1. `redux`中使用`PayloadAction`指定`payload`类型
 
