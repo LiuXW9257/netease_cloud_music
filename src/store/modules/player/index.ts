@@ -12,6 +12,7 @@ interface IPlayerState {
   playSongList: any[]
   playSongIndex: number
   playModel: IPlayModel
+  isShowPanel: boolean
 }
 
 const initialState: IPlayerState = {
@@ -281,7 +282,8 @@ const initialState: IPlayerState = {
     }
   ],
   playSongIndex: 0,
-  playModel: IPlayModel.listLoop
+  playModel: IPlayModel.listLoop,
+  isShowPanel: true
 }
 
 export const fetchCurrentSong = createAsyncThunk<
@@ -337,6 +339,9 @@ const playerSlice = createSlice({
     },
     updatePlayModel(state, { payload }) {
       state.playModel = payload
+    },
+    updateIsShowPanel(state, { payload }) {
+      state.isShowPanel = payload
     }
   }
 })
@@ -346,6 +351,7 @@ export const {
   updateLyricIndex,
   updatePlaySongIndex,
   updatePlaySongList,
-  updatePlayModel
+  updatePlayModel,
+  updateIsShowPanel
 } = playerSlice.actions
 export default playerSlice.reducer

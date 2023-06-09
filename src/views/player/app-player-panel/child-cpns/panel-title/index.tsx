@@ -2,14 +2,19 @@ import React, { memo } from 'react'
 import type { ReactNode } from 'react'
 import { CloseCircleOutlined } from '@ant-design/icons'
 import { TitleWrapper } from './style'
-import { useAppSelector } from '@/store/hooks'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { updateIsShowPanel } from '@/store/modules/player'
 interface IProps {
   children?: ReactNode
 }
 
 const PanelTitle: React.FC<IProps> = () => {
   const { currentSong } = useAppSelector((state) => state.player)
+  const dispatch = useAppDispatch()
 
+  const handleClosePanel = () => {
+    dispatch(updateIsShowPanel(false))
+  }
   return (
     <TitleWrapper>
       <div className="left">
@@ -28,7 +33,7 @@ const PanelTitle: React.FC<IProps> = () => {
       <div className="right">
         <div>{currentSong?.name}</div>
         <div className="close-btn">
-          <CloseCircleOutlined />
+          <CloseCircleOutlined onClick={handleClosePanel} />
         </div>
       </div>
     </TitleWrapper>

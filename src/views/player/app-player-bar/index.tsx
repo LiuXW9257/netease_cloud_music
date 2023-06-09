@@ -9,6 +9,7 @@ import { formatGetImg, formatTime } from '@/utils/format'
 import { getMusicResouceById } from '@/utils/player'
 import {
   fetchCurrentSong,
+  updateIsShowPanel,
   updateLyricIndex,
   updatePlayModel
 } from '@/store/modules/player'
@@ -25,7 +26,8 @@ const AppPlayerBar: React.FC<IProps> = () => {
     lyricIndex,
     playSongList,
     playSongIndex,
-    playModel
+    playModel,
+    isShowPanel
   } = useAppSelector((state) => state.player, shallowEqual)
   const dispatch = useAppDispatch()
 
@@ -151,6 +153,11 @@ const AppPlayerBar: React.FC<IProps> = () => {
     }
   }
 
+  // 切换 歌单/歌词 面板是否显示
+  const changeShowPanel = () => {
+    dispatch(updateIsShowPanel(!isShowPanel))
+  }
+
   return (
     <PlayerWrapper className="sprite_playbar">
       <div className="content wrap-v2">
@@ -212,7 +219,10 @@ const AppPlayerBar: React.FC<IProps> = () => {
               className="btn sprite_playbar loop"
               onClick={handleChangePalyModel}
             ></button>
-            <button className="btn sprite_playbar playlist">
+            <button
+              className="btn sprite_playbar playlist"
+              onClick={changeShowPanel}
+            >
               {playSongList?.length}
             </button>
           </div>
