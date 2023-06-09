@@ -1519,7 +1519,7 @@ export const fetchCurrentSong = createAsyncThunk<
 >   import { configureStore } from '@reduxjs/toolkit'
 >   import recommendReducer from './modules/recommend'
 >   import playerReducer from './modules/player'
->     
+>       
 >   const store = configureStore({
 >     reducer: {
 >       recommend: recommendReducer,
@@ -1528,10 +1528,10 @@ export const fetchCurrentSong = createAsyncThunk<
 >   })
 >   type GetStateFnType = typeof store.getState
 >   export type DispatchType = typeof store.dispatch
->     
+>       
 >   // 获取函数store.getState()的返回值类型
 >   export type RootState = ReturnType<GetStateFnType>
->     
+>       
 >   export default store
 >   ```
 
@@ -1545,7 +1545,7 @@ export const fetchCurrentSong = createAsyncThunk<
 
 ## 23. 歌词面板歌词滚动
 
-![image-20230609154826123](assets/image-20230609154826123.png)
+![image-20230609160609661](assets/image-20230609160609661.png)
 
 1. 根据当前播放歌词的`idx`获取当前歌词所在的 div
 2. 利用`offsetTop `获取与最近一级有定位属性的父级元素的顶部的距离
@@ -1566,6 +1566,18 @@ div.scrollTo({
 const currentLyricItemEl = lyricPanelEl.current!.children[idx]
 // 计算到顶部的距离
 const gap = (currentLyricItemEl as HTMLDivElement).offsetTop
+```
+
+6. 隐藏滚动条，并保留滚动效果过
+
+```css
+.box {
+  overflow: auto;
+}
+
+.box::-webkit-scrollbar {
+    display: none;
+  }
 ```
 
 

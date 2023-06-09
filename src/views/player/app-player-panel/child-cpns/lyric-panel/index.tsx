@@ -25,6 +25,7 @@ const LyricPanel: React.FC<IProps> = () => {
   useEffect(() => {
     // 获取当前歌词所在的 div
     const currentLyricItemEl = lyricPanelEl.current!.children[lyricIndex]
+    // 第一次加载时，DOM元素还没有创建
     if (currentLyricItemEl) {
       // 计算到顶部的距离
       const gap = (currentLyricItemEl as HTMLDivElement).offsetTop
