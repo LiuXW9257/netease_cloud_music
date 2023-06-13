@@ -1,5 +1,7 @@
 # 网易云音乐笔记
 
+> 写在前面：这是学习 coderwhy 老师的课程，自己的项目实战部分，如有侵权请联系 liuxw9257@163.com，收到后会立即处理。谢谢！
+
 ## 0. 技术栈
 
 - React 18
@@ -8,15 +10,11 @@
 - Redux RTK
 - antd
 
-
-
 ## 1. 创建项目
 
 ```bash
 create-react-app netease_cloud_music --template typescript
 ```
-
-
 
 ## 2. 项目初始化
 
@@ -193,33 +191,29 @@ create-react-app netease_cloud_music --template typescript
       	'@typescript-eslint/no-var-requires': 'off'
       }
       ```
-    
+
       2. `eslint` 结合 `prettier`
-    
+
       > 是`eslint`检查时 按照`prettier`规范
-    
+
       ```
       npm i eslint-plugin-prettier eslint-config-prettier -D
       ```
-    
+
       ```js
       // eslint 结合 prettier
       extends: [
         'plugin:prettier/recommended'
       ],
       ```
-    
+
       > prittier**书写**代码时检查规范
       >
       > eslint **编译**代码时检查规范
 
-
-
 ## 3. 项目结构搭建
 
 ![image-20230507150630107](assets/image-20230507150630107.png)
-
-
 
 ## 4. css 样式重置
 
@@ -266,8 +260,6 @@ root.render(
   </React.StrictMode>
 )
 ```
-
-
 
 ## 5. 路由配置
 
@@ -376,8 +368,6 @@ export default memo(Template)
 
 > `<Navigate />`
 
-
-
 ### 2. 路由懒加载
 
 > 路由组件分包处理（`import()`）
@@ -406,8 +396,6 @@ const routes: RouteObject[] = [
   }
 ]
 ```
-
-
 
 ### 3. discover 二级路由
 
@@ -456,8 +444,6 @@ const routes: RouteObject[] = [
    >
    > - 和我们的方法一样，定义`lazyLoad()`方法，给每个懒加载组件包裹`<Suspense>`
    > - 二级路由不使用懒加载的形式（`可行性不大`）
-
-
 
 ## 6. Redux 配置
 
@@ -556,8 +542,6 @@ export type DispatchType = typeof store.dispatch
 export const useAppDispatch: () => DispatchType = useDispatch
 ```
 
-
-
 ## 7. 集成 axios
 
 1. 安装
@@ -602,8 +586,6 @@ class Request {
 export default Request
 
 ```
-
-
 
 #### 2. 全局拦截器
 
@@ -761,8 +743,6 @@ export default Request
 
 ![image-20230508205846327](assets/image-20230508205846327.png)
 
-
-
 ### 2. axios 分装结果
 
 `service/request/index`
@@ -884,8 +864,6 @@ export interface RequestConfig<T = AxiosResponse> extends AxiosRequestConfig {
 }
 ```
 
-
-
 ## 8. 环境区分
 
 > 开发环境、生产环境
@@ -919,8 +897,6 @@ REACT_APP_BASE_URL=http://codercba.com:9002
 ```
 
 ![image-20230509093517469](assets/image-20230509093517469.png)
-
-
 
 ## 9. styled-components
 
@@ -970,8 +946,6 @@ const AppFooter: React.FC<IProps> = () => {
 
 export default memo(AppFooter)
 ```
-
-
 
 ## 10. 主题的定义与使用
 
@@ -1037,8 +1011,6 @@ export const HeaderWrapper = styled.div`
 
 > `styled-components`中`${}`表示里面写的是`js`表达式
 
-
-
 ## 11. 集成 antd
 
 1. 安装
@@ -1081,8 +1053,6 @@ module.exports = {
 ```
 
 > `craco.fonfig.js`中为`CracoLessPlugin`添加 options 选项
-
-
 
 ## 12. AppHeader
 
@@ -1154,15 +1124,11 @@ module.exports = {
    - 回调函数中结构出`isActive`、`isPending`
    - `active`是我们自定义的`css`类样式
 
-
-
 ### 2. headerRight
 
 ![image-20230510094620756](assets/image-20230510094620756.png)
 
 > 使用`antd`
-
-
 
 ## 13. Recommend Banner（轮播图）
 
@@ -1189,8 +1155,6 @@ const divRef = useRef<HTMLDivElement>(null)
 <div ref={divRef}></div>
 ```
 
-
-
 ### 2. 切换淡入
 
 1. `antd` `Carousel`组件 使用属性`effect="fade"` 默认值为`scrollx`
@@ -1204,8 +1168,6 @@ const divRef = useRef<HTMLDivElement>(null)
    /* 实现背景切换淡入淡出 */
    transition: all 0.5s ease-in-out;
    ```
-
-
 
 ### 3. 重写轮播图下方的 `indicator`
 
@@ -1250,8 +1212,6 @@ classNames('foo', { bar: true, duck: false }, 'baz', { quux: true }) // => 'foo 
 classNames(null, false, 'bar', undefined, 0, 1, { baz: null }, '') // => 'bar 1'
 ```
 
-
-
 ## 14. craco 配置代理
 
 `craco.config.js`
@@ -1291,8 +1251,6 @@ REACT_APP_BASE_URL=http://localhost:3000/prod
 BUILD_PATH=netease_cloud_music
 ```
 
-
-
 ## 15. TitleToolbar
 
 ![image-20230511222448726](assets/image-20230511222448726.png)
@@ -1302,8 +1260,6 @@ BUILD_PATH=netease_cloud_music
 - 对于小标题`menu` 每个小标题后边有个`|`，最后一个隐藏
   - css 伪类选择器`last-child`控制其隐藏
   - 通过 js 判断`id`是不是最后一个，如果是，就不显示`|`所在的标签
-
-
 
 ## 16. 热门推荐 item-v1
 
@@ -1321,8 +1277,6 @@ export function formatGetImg(url: string, width: number, height = width) {
 
 - 提取公用方法
 
-
-
 ## 17. 新碟上架轮播图
 
 ![image-20230512162920911](assets/image-20230512162920911.png)
@@ -1331,8 +1285,6 @@ export function formatGetImg(url: string, width: number, height = width) {
 >
 > - 对该层`div`自定义`display:flex !important`
 > - 在该`div`内嵌一个`div`
-
-
 
 ## 18. 推荐页面榜单
 
@@ -1363,7 +1315,7 @@ export function formatGetImg(url: string, width: number, height = width) {
          newSongsRanking: 3779629, // 新歌榜
          originalRanking: 2884035 // 原创榜
        }
-        
+
        export const fetchRecommendRankingData = createAsyncThunk(
          'fetchRecommendRankingData',
          (_, { dispatch }) => {
@@ -1392,13 +1344,11 @@ export function formatGetImg(url: string, width: number, height = width) {
 
 > 伪类选择器选择前三`:nth-child(3-n)`
 
-
-
 ## 19. 播放栏
 
 ![image-20230513144638559](assets/image-20230513144638559.png)
 
-1. ts 中给 styled传参
+1. ts 中给 styled 传参
 
    ```tsx
    <BarControl playState={playState}></BarControl>
@@ -1408,7 +1358,7 @@ export function formatGetImg(url: string, width: number, height = width) {
    interface IBarControl {
      playState: boolean
    }
-   
+
    export const BarControl = styled.div<IBarControl>``
    ```
 
@@ -1422,25 +1372,23 @@ export function formatGetImg(url: string, width: number, height = width) {
 
    ```tsx
    const playerRef = useRef<HTMLAudioElement>(null)
-   
+
    // 控制音乐播放与暂停
    const handlePlayMusic = () => {
      playState
        ? playerRef.current?.pause()
-     : playerRef.current?.play().catch((err) => {
-       setPlayState(false)
-       console.log('歌曲播放失败', err)
-     })
+       : playerRef.current?.play().catch((err) => {
+           setPlayState(false)
+           console.log('歌曲播放失败', err)
+         })
      setPlayState(!playState)
    }
-   
-   <audio ref={playerRef} onTimeUpdate={handleTimeUpdate} />
+
+   ;<audio ref={playerRef} onTimeUpdate={handleTimeUpdate} />
    ```
 
-   4. onTimeUpdate回调获取当前播放进度
+   4. onTimeUpdate 回调获取当前播放进度
    5. `.play()`方法返回值是一个`Promise`表示播放成功与否
-
-
 
 ## 20. 点击、拖拽进度条
 
@@ -1475,8 +1423,6 @@ const handleSliderChanging = (value: number) => {
 }
 ```
 
-
-
 ## 21. 播放列表
 
 > ts 中在`createAsyncThunk`中获取`state`
@@ -1502,15 +1448,15 @@ export const fetchCurrentSong = createAsyncThunk<
 >
 > - ```ts
 >   declare type AsyncThunkConfig = {
->       state?: unknown;
->       dispatch?: Dispatch;
->       extra?: unknown;
->       rejectValue?: unknown;
->       serializedErrorType?: unknown;
->       pendingMeta?: unknown;
->       fulfilledMeta?: unknown;
->       rejectedMeta?: unknown;
->   };
+>     state?: unknown
+>     dispatch?: Dispatch
+>     extra?: unknown
+>     rejectValue?: unknown
+>     serializedErrorType?: unknown
+>     pendingMeta?: unknown
+>     fulfilledMeta?: unknown
+>     rejectedMeta?: unknown
+>   }
 >   ```
 >
 > - `RootState`是推断的`state`类型
@@ -1519,7 +1465,7 @@ export const fetchCurrentSong = createAsyncThunk<
 >   import { configureStore } from '@reduxjs/toolkit'
 >   import recommendReducer from './modules/recommend'
 >   import playerReducer from './modules/player'
->       
+>
 >   const store = configureStore({
 >     reducer: {
 >       recommend: recommendReducer,
@@ -1528,20 +1474,16 @@ export const fetchCurrentSong = createAsyncThunk<
 >   })
 >   type GetStateFnType = typeof store.getState
 >   export type DispatchType = typeof store.dispatch
->       
+>
 >   // 获取函数store.getState()的返回值类型
 >   export type RootState = ReturnType<GetStateFnType>
->       
+>
 >   export default store
 >   ```
-
-
 
 ## 22. 不同模式下切换歌曲
 
 > 由于不同模式，上一首，下一首是不同的，所以需要根据模式而定，先判定模式
-
-
 
 ## 23. 歌词面板歌词滚动
 
@@ -1576,13 +1518,9 @@ const gap = (currentLyricItemEl as HTMLDivElement).offsetTop
 }
 
 .box::-webkit-scrollbar {
-    display: none;
-  }
+  display: none;
+}
 ```
-
-
-
-
 
 ## 99. 小结
 
@@ -1612,7 +1550,7 @@ reducers: {
        add_header 'Access-Control-Allow-Origin' '*' always;
        ...
    }
-   
+
    server {
        ...
        location / {
